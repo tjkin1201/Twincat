@@ -9,7 +9,6 @@ This repository contains a TwinCAT 3 project following industry best practices f
 ## Repository Structure
 
 ```
-/Twincat
 ├── README.md              # Project documentation
 ├── LICENSE                # License information
 ├── .gitignore            # Git ignore rules for TwinCAT projects
