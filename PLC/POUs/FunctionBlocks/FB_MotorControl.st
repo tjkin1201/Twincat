@@ -9,6 +9,7 @@ VAR_INPUT
     bEnable         : BOOL;             // Enable motor
     fTargetPosition : LREAL;            // Target position
     fTargetVelocity : LREAL := 100.0;   // Target velocity
+    fCycleTime      : LREAL := 0.01;    // Task cycle time in seconds (default 10ms)
 END_VAR
 
 VAR_OUTPUT
@@ -46,12 +47,13 @@ CASE eState OF
         fPositionError := ABS(fTargetPosition - stAxisData.fActualPosition);
         
         // Simulate motion (in real application, this would interface with hardware)
+        // Move based on configured cycle time
         IF stAxisData.fActualPosition < fTargetPosition THEN
             stAxisData.fActualPosition := stAxisData.fActualPosition + 
-                (fTargetVelocity * 0.001); // Assuming 1ms cycle time
+                (fTargetVelocity * fCycleTime);
         ELSIF stAxisData.fActualPosition > fTargetPosition THEN
             stAxisData.fActualPosition := stAxisData.fActualPosition - 
-                (fTargetVelocity * 0.001);
+                (fTargetVelocity * fCycleTime);
         END_IF
         
         // Check if target reached

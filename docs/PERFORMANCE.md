@@ -40,7 +40,8 @@ For maximum determinism and minimum jitter:
 1. **Data Types**
    - Use smallest appropriate data type
    - Prefer INT/DINT over REAL for integer values
-   - Use LREAL instead of REAL for better precision
+   - Use LREAL instead of REAL when high precision is required (note: LREAL uses 8 bytes vs 4 bytes for REAL and may have slower execution, so balance precision needs with performance)
+   - Use REAL for performance-critical applications where the precision difference is acceptable
    - Minimize STRING lengths
 
 2. **Variable Scope**
