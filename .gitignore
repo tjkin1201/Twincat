@@ -1,0 +1,40 @@
+# TwinCAT specific files
+*.tpy
+*.tpzip
+*.tclrs
+_Boot/
+_CompileInfo/
+_Libraries/
+LineIDs.dbg
+*.compileinfo
+
+# Visual Studio and TwinCAT
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+bin/
+obj/
+*.Cache
+
+# Build results
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Bb]in/
+[Oo]bj/
+
+# TwinCAT TMC files (these can be regenerated)
+*.tmc
+
+# Backup files
+*.bak
+*~
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
