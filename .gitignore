@@ -30,24 +30,8 @@ x86/
 # Visual Studio 2015/2017/2019/2022 cache/options directory
 .vs/
 
-# ReSharper
-_ReSharper*/
-*.[Rr]e[Ss]harper
-*.DotSettings.user
-
 # JustCode
 .JustCode
-
-# TeamCity
-_TeamCity*
-
-# DotCover
-*.dotCover
-
-# NCrunch
-_NCrunch_*
-.*crunch*.local.xml
-nCrunchTemp_*
 
 # Visual Studio profiler
 *.psess
@@ -61,15 +45,6 @@ $tf/
 # Guidance Automation Toolkit
 *.gpState
 
-# ReSharper is a .NET coding add-in
-_ReSharper*/
-
-# TeamCity is a build add-in
-_TeamCity*
-
-# DotCover is a Code Coverage Tool
-*.dotCover
-
 # AxoCover is a Code Coverage Tool
 .axoCover/*
 !.axoCover/settings.json
@@ -77,11 +52,6 @@ _TeamCity*
 # Visual Studio code coverage results
 *.coverage
 *.coveragexml
-
-# NCrunch
-_NCrunch_*
-.*crunch*.local.xml
-nCrunchTemp_*
 
 # MightyMoose
 *.mm.*

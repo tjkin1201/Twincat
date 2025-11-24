@@ -2,8 +2,9 @@
 # and leave all files detected as binary untouched.
 * text=auto
 
-# Force the following filetypes to have unix eols, so Windows does not break them
-*.* text eol=lf
+# Documentation and text files
+*.md text eol=lf
+*.txt text eol=lf
 
 # TwinCAT project files should not have line ending conversions
 # to prevent corruption
