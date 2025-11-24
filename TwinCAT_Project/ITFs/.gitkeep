@@ -1,0 +1,15 @@
+# Interfaces (ITFs)
+
+This directory contains interface definitions for object-oriented programming in TwinCAT.
+
+## Naming Conventions
+
+- Interfaces: `I_` prefix (e.g., `I_Motor`, `I_Sensor`)
+
+## Best Practices
+
+- Use interfaces to define contracts between components
+- Keep interfaces focused on a single responsibility
+- Document interface methods clearly
+- Use interfaces for dependency injection and testability
+- Consider interface segregation principle

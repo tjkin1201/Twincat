@@ -1,0 +1,20 @@
+# Data Unit Types (DUTs)
+
+This directory contains:
+- Structures (STRUCT)
+- Enumerations (ENUM)
+- Unions (UNION)
+- Type definitions (TYPE)
+- Aliases
+
+## Naming Conventions
+
+- Structures: `ST_` prefix (e.g., `ST_MotorData`)
+- Enumerations: `E_` prefix (e.g., `E_MotorState`)
+- Types: `T_` prefix (e.g., `T_Speed`)
+
+## Best Practices
+
+- Keep structures focused and cohesive
+- Use appropriate data types for efficiency
+- Document complex data structures
