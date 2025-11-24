@@ -1,0 +1,19 @@
+# Handle line endings automatically for files detected as text
+# and leave all files detected as binary untouched.
+* text=auto
+
+# Force the following filetypes to have unix eols, so Windows does not break them
+*.* text eol=lf
+
+# TwinCAT project files should not have line ending conversions
+# to prevent corruption
+*.tsproj -text
+*.plcproj -text
+*.xti -text
+*.tmc -text
+*.TMC -text
+
+# Windows script files
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.ps1 text eol=crlf

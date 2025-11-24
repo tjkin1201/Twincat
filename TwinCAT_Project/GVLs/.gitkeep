@@ -1,0 +1,15 @@
+# Global Variable Lists (GVLs)
+
+This directory contains global variable lists that are accessible throughout the project.
+
+## Naming Conventions
+
+- Global Variable Lists: `GVL_` prefix (e.g., `GVL_Config`, `GVL_Constants`)
+
+## Best Practices
+
+- Keep GVLs organized by purpose (parameters, constants, status)
+- Avoid overuse of global variables
+- Use CONSTANT or PERSISTENT attributes where appropriate
+- Document the purpose of each GVL
+- Consider using parameter lists for configuration data

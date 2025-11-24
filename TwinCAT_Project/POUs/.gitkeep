@@ -1,0 +1,18 @@
+# Program Organization Units (POUs)
+
+This directory contains:
+- Programs (PROGRAM)
+- Function Blocks (FUNCTION_BLOCK)
+- Functions (FUNCTION)
+- Actions
+- Methods
+
+## Naming Conventions
+
+- Programs: `PRG_` prefix (e.g., `PRG_Main`)
+- Function Blocks: `FB_` prefix (e.g., `FB_MotorController`)
+- Functions: `F_` prefix (e.g., `F_CalculateSpeed`)
+
+## Organization
+
+Organize POUs by functional module for better maintainability.
