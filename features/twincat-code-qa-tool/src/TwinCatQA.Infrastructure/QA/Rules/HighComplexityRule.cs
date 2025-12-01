@@ -1,21 +1,32 @@
 using TwinCatQA.Domain.Models;
 using TwinCatQA.Domain.Models.QA;
 using TwinCatQA.Domain.Services;
+using TwinCatQA.Infrastructure.Parsers;
 
 namespace TwinCatQA.Infrastructure.QA.Rules;
 
 /// <summary>
-/// 순환 복잡도 감지 규칙 (Info)
-/// McCabe 순환 복잡도가 15 이상인 경우 리팩토링 권장
+/// 순환 복잡도 감지 규칙
+/// McCabe 순환 복잡도 기반 경고
+/// - 10 이하: Good (검사 통과)
+/// - 11-15: Info (권장 개선)
+/// - 16-20: Warning (개선 필요)
+/// - 21 이상: Critical (즉시 리팩토링 필수)
 /// </summary>
 public class HighComplexityRule : IQARuleChecker
 {
     public string RuleId => "QA017";
     public string RuleName => "높은 순환 복잡도 감지";
-    public string Description => "코드 복잡도 감소를 위한 리팩토링 권장 (McCabe 복잡도 15 이상)";
-    public Severity Severity => Severity.Info;
+    public string Description => "코드 복잡도 감소를 위한 리팩토링 권장 (McCabe 복잡도 기반)";
+    public Severity Severity => Severity.Warning; // 기본 심각도 (실제로는 복잡도에 따라 동적 결정)
 
-    private const int ComplexityThreshold = 15;
+    // 복잡도 임계값
+    private const int InfoThreshold = 10;      // 11 이상: Info
+    private const int WarningThreshold = 15;   // 16 이상: Warning
+    private const int CriticalThreshold = 20;  // 21 이상: Critical
+
+    // 정규식 기반 복잡도 계산기
+    private readonly CyclomaticComplexityVisitor _complexityCalculator = new();
 
     public List<QAIssue> CheckVariableChange(VariableChange change)
     {
@@ -40,29 +51,40 @@ public class HighComplexityRule : IQARuleChecker
             return issues;
         }
 
-        // McCabe 순환 복잡도 계산
-        var complexity = CalculateCyclomaticComplexity(codeToCheck);
+        // McCabe 순환 복잡도 계산 (정규식 기반)
+        var complexity = _complexityCalculator.CalculateFromCode(codeToCheck);
 
-        if (complexity >= ComplexityThreshold)
+        // 임계값에 따른 심각도 결정
+        if (complexity <= InfoThreshold)
         {
-            issues.Add(new QAIssue
-            {
-                Severity = Severity.Info,
-                Category = "코드 품질",
-                Title = "높은 순환 복잡도로 인한 유지보수 어려움",
-                Description = $"{change.ElementName}: 순환 복잡도 {complexity} (권장: {ComplexityThreshold} 미만)",
-                Location = $"{change.FilePath}:{change.StartLine}",
-                FilePath = change.FilePath,
-                Line = change.StartLine,
-                WhyDangerous = $@"
-순환 복잡도가 {complexity}로 매우 높아 다음 문제가 발생할 수 있습니다:
+            return issues; // 10 이하는 문제 없음
+        }
 
-1. 테스트 어려움: {complexity}개 이상의 경로를 테스트해야 함
-2. 버그 발생률 증가: 복잡도가 높을수록 버그 가능성 증가
-3. 이해 난이도 상승: 코드 흐름 파악이 어려움
-4. 변경 위험: 수정 시 예상치 못한 부작용 발생 가능
+        var severity = GetSeverityForComplexity(complexity);
+        var severityText = GetSeverityText(complexity);
 
-권장 복잡도는 15 미만이며, 10 이하가 이상적입니다.
+        issues.Add(new QAIssue
+        {
+            Severity = severity,
+            Category = "코드 품질",
+            Title = $"높은 순환 복잡도 ({severityText})",
+            Description = $"{change.ElementName}: 순환 복잡도 {complexity} (권장: {InfoThreshold} 이하)",
+            Location = $"{change.FilePath}:{change.StartLine}",
+            FilePath = change.FilePath,
+            Line = change.StartLine,
+            WhyDangerous = $@"
+순환 복잡도가 {complexity}로 {severityText} 수준입니다.
+
+복잡도 등급:
+- 1-10: Good (이상적)
+- 11-15: Info (권장 개선)
+- 16-20: Warning (개선 필요)
+- 21+: Critical (즉시 리팩토링 필수)
+
+현재 문제:
+1. 테스트 어려움: 최소 {complexity}개 경로 테스트 필요
+2. 버그 발생률: 복잡도 {complexity}는 버그 발생 가능성 {GetBugProbability(complexity)}
+3. 유지보수: 코드 이해 및 수정 어려움
 ",
                 Recommendation = $@"
 ✅ 권장 해결 방법:
@@ -127,7 +149,6 @@ public class HighComplexityRule : IQARuleChecker
                 OldCodeSnippet = change.OldCode ?? string.Empty,
                 NewCodeSnippet = change.NewCode ?? string.Empty
             });
-        }
 
         return issues;
     }
@@ -139,53 +160,41 @@ public class HighComplexityRule : IQARuleChecker
     }
 
     /// <summary>
-    /// McCabe 순환 복잡도 계산
-    /// 복잡도 = 결정 포인트 수 + 1
+    /// 복잡도에 따른 심각도 반환
     /// </summary>
-    private int CalculateCyclomaticComplexity(string code)
+    private Severity GetSeverityForComplexity(int complexity)
     {
-        int complexity = 1; // 기본 복잡도
-        var codeUpper = code.ToUpper();
-
-        // 조건문: IF, ELSIF
-        complexity += CountOccurrences(codeUpper, "IF ");
-        complexity += CountOccurrences(codeUpper, "ELSIF ");
-
-        // 반복문: FOR, WHILE, REPEAT
-        complexity += CountOccurrences(codeUpper, "FOR ");
-        complexity += CountOccurrences(codeUpper, "WHILE ");
-        complexity += CountOccurrences(codeUpper, "REPEAT");
-
-        // CASE 문의 각 분기
-        complexity += CountOccurrences(codeUpper, "OF\n") + CountOccurrences(codeUpper, "OF\r\n");
-
-        // 논리 연산자: AND, OR
-        complexity += CountOccurrences(codeUpper, " AND ");
-        complexity += CountOccurrences(codeUpper, " OR ");
-
-        // 예외 처리
-        complexity += CountOccurrences(codeUpper, "__CATCH");
-
-        return complexity;
+        if (complexity > CriticalThreshold)
+            return Severity.Critical;
+        if (complexity > WarningThreshold)
+            return Severity.Warning;
+        return Severity.Info;
     }
 
     /// <summary>
-    /// 문자열에서 특정 패턴의 출현 횟수 계산
+    /// 복잡도에 따른 심각도 텍스트 반환
     /// </summary>
-    private int CountOccurrences(string text, string pattern)
+    private string GetSeverityText(int complexity)
     {
-        if (string.IsNullOrEmpty(text) || string.IsNullOrEmpty(pattern))
-            return 0;
+        if (complexity > CriticalThreshold)
+            return "매우 높음 - 즉시 리팩토링 필수";
+        if (complexity > WarningThreshold)
+            return "높음 - 개선 필요";
+        return "보통 - 권장 개선";
+    }
 
-        int count = 0;
-        int index = 0;
-
-        while ((index = text.IndexOf(pattern, index, StringComparison.Ordinal)) != -1)
-        {
-            count++;
-            index += pattern.Length;
-        }
-
-        return count;
+    /// <summary>
+    /// 복잡도에 따른 버그 발생 확률 추정
+    /// </summary>
+    private string GetBugProbability(int complexity)
+    {
+        // NASA 및 Carnegie Mellon 연구 기반 추정치
+        if (complexity > 50)
+            return "매우 높음 (>70%)";
+        if (complexity > CriticalThreshold)
+            return "높음 (40-70%)";
+        if (complexity > WarningThreshold)
+            return "중간 (20-40%)";
+        return "낮음 (<20%)";
     }
 }

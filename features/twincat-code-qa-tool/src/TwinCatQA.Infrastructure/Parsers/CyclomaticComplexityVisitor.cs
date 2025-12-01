@@ -1,27 +1,43 @@
 using System;
+using System.Text.RegularExpressions;
 using TwinCatQA.Domain.Models;
 
 namespace TwinCatQA.Infrastructure.Parsers
 {
     /// <summary>
-    /// 사이클로매틱 복잡도 계산 Visitor
+    /// 사이클로매틱 복잡도 계산기
     ///
-    /// McCabe의 사이클로매틱 복잡도를 계산합니다.
-    /// 기본 공식: M = E - N + 2P (E=간선, N=노드, P=연결된 컴포넌트)
-    /// 단순화 방식: M = 1 + 결정 포인트 개수
+    /// McCabe의 사이클로매틱 복잡도를 정규식 기반으로 계산합니다.
+    /// 공식: M = 1 + 결정 포인트 개수
     /// </summary>
     /// <remarks>
-    /// ANTLR4 Visitor 패턴 사용
-    /// StructuredText.g4를 컴파일한 후 StructuredTextBaseVisitor를 상속하여 구현
-    ///
-    /// 현재는 ANTLR4 생성 파일 없이 스켈레톤만 제공
-    /// 실제 구현은 ANTLR4 컴파일 후 주석 해제하여 사용
+    /// 결정 포인트:
+    /// - IF, ELSIF 문
+    /// - FOR, WHILE, REPEAT 루프
+    /// - CASE 문의 각 분기
+    /// - AND, OR 논리 연산자 (조건 복잡도)
+    /// - EXIT, RETURN (조기 탈출)
+    /// - __TRY/__CATCH 예외 처리
     /// </remarks>
-    public class CyclomaticComplexityVisitor // TODO: ANTLR 생성 후 상속: : StructuredTextBaseVisitor<int>
+    public class CyclomaticComplexityVisitor
     {
-        #pragma warning disable CS0169 // 필드가 사용되지 않음 (ANTLR 구현 대기 중)
-        private int _complexity;
-        #pragma warning restore CS0169
+        // 정규식 패턴 (컴파일됨)
+        private static readonly Regex IfPattern = new(@"\bIF\b(?!\s*$)", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static readonly Regex ElsifPattern = new(@"\bELSIF\b", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static readonly Regex ForPattern = new(@"\bFOR\b\s+\w+\s*:=", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static readonly Regex WhilePattern = new(@"\bWHILE\b", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static readonly Regex RepeatPattern = new(@"\bREPEAT\b", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static readonly Regex CaseOfPattern = new(@"\bCASE\b.*?\bOF\b", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Compiled);
+        private static readonly Regex CaseBranchPattern = new(@"^\s*(\d+|[\w_]+)\s*:", RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled);
+        private static readonly Regex AndPattern = new(@"\bAND\b", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static readonly Regex OrPattern = new(@"\bOR\b", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static readonly Regex ExitPattern = new(@"\bEXIT\b\s*;", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static readonly Regex ReturnPattern = new(@"\bRETURN\b\s*;", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static readonly Regex TryCatchPattern = new(@"\b__CATCH\b", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+        // 주석 제거용 패턴
+        private static readonly Regex LineCommentPattern = new(@"//.*$", RegexOptions.Multiline | RegexOptions.Compiled);
+        private static readonly Regex BlockCommentPattern = new(@"\(\*.*?\*\)", RegexOptions.Singleline | RegexOptions.Compiled);
 
         /// <summary>
         /// Function Block의 사이클로매틱 복잡도를 계산합니다.
@@ -30,134 +46,105 @@ namespace TwinCatQA.Infrastructure.Parsers
         /// <returns>복잡도 값 (최소 1)</returns>
         public int Calculate(FunctionBlock functionBlock)
         {
-            // TODO: ANTLR4 통합 후 구현
-            // 실제 구현:
-            // _complexity = 1; // 기본값
-            // Visit(functionBlock.AstNode);
-            // return _complexity;
+            if (functionBlock == null || string.IsNullOrEmpty(functionBlock.Body))
+            {
+                return 1;
+            }
 
-            // 현재는 기본값 반환
-            return 1;
+            return CalculateFromCode(functionBlock.Body);
         }
 
-        // TODO: ANTLR4 생성 파일 추가 후 아래 메서드 주석 해제
-
-        /*
         /// <summary>
-        /// IF 문 방문 - 복잡도 +1
+        /// 소스 코드 문자열에서 사이클로매틱 복잡도를 계산합니다.
         /// </summary>
-        public override int VisitIfStatement(StructuredTextParser.IfStatementContext context)
+        /// <param name="code">분석할 ST 코드</param>
+        /// <returns>복잡도 값 (최소 1)</returns>
+        public int CalculateFromCode(string code)
         {
-            // IF 문 자체로 +1
-            _complexity++;
-
-            // THEN 블록 방문
-            Visit(context.statement());
-
-            // 각 ELSIF 절마다 +1
-            if (context.expression() != null)
+            if (string.IsNullOrWhiteSpace(code))
             {
-                foreach (var elsif in context.expression().Skip(1)) // 첫 번째는 IF 조건
+                return 1;
+            }
+
+            // 주석 제거 (주석 내 키워드가 복잡도에 영향을 주지 않도록)
+            var cleanCode = RemoveComments(code);
+
+            int complexity = 1; // 기본 복잡도
+
+            // 1. 조건문 (IF, ELSIF)
+            complexity += IfPattern.Matches(cleanCode).Count;
+            complexity += ElsifPattern.Matches(cleanCode).Count;
+
+            // 2. 반복문 (FOR, WHILE, REPEAT)
+            complexity += ForPattern.Matches(cleanCode).Count;
+            complexity += WhilePattern.Matches(cleanCode).Count;
+            complexity += RepeatPattern.Matches(cleanCode).Count;
+
+            // 3. CASE 문 분기 (각 분기마다 +1)
+            complexity += CountCaseBranches(cleanCode);
+
+            // 4. 논리 연산자 (AND, OR) - 조건 복잡도
+            complexity += AndPattern.Matches(cleanCode).Count;
+            complexity += OrPattern.Matches(cleanCode).Count;
+
+            // 5. 조기 탈출 (EXIT, RETURN)
+            complexity += ExitPattern.Matches(cleanCode).Count;
+            complexity += ReturnPattern.Matches(cleanCode).Count;
+
+            // 6. 예외 처리 (__TRY/__CATCH)
+            complexity += TryCatchPattern.Matches(cleanCode).Count;
+
+            return complexity;
+        }
+
+        /// <summary>
+        /// 소스 코드에서 주석을 제거합니다.
+        /// </summary>
+        private string RemoveComments(string code)
+        {
+            // 블록 주석 제거 (* ... *)
+            var result = BlockCommentPattern.Replace(code, " ");
+            // 라인 주석 제거 //
+            result = LineCommentPattern.Replace(result, "");
+            return result;
+        }
+
+        /// <summary>
+        /// CASE 문의 분기 개수를 계산합니다.
+        /// </summary>
+        private int CountCaseBranches(string code)
+        {
+            int branchCount = 0;
+
+            // CASE ... OF ... END_CASE 블록 찾기
+            var caseMatches = CaseOfPattern.Matches(code);
+            if (caseMatches.Count == 0)
+            {
+                return 0;
+            }
+
+            // 각 CASE 블록 내에서 분기 개수 세기
+            // CASE 블록 시작 위치 찾기
+            var casePositions = new System.Collections.Generic.List<int>();
+            var endCasePattern = new Regex(@"\bEND_CASE\b", RegexOptions.IgnoreCase);
+
+            foreach (Match caseMatch in caseMatches)
+            {
+                int startPos = caseMatch.Index + caseMatch.Length;
+                var endMatch = endCasePattern.Match(code, startPos);
+
+                if (endMatch.Success)
                 {
-                    _complexity++; // 각 ELSIF마다 +1
+                    // CASE와 END_CASE 사이의 코드 추출
+                    string caseBlock = code.Substring(startPos, endMatch.Index - startPos);
+
+                    // 분기 패턴 매칭 (숫자: 또는 식별자:)
+                    branchCount += CaseBranchPattern.Matches(caseBlock).Count;
                 }
             }
 
-            // ELSE 절은 복잡도를 증가시키지 않음 (기본 경로)
-            // 하지만 내부 statement는 방문해야 함
-
-            return base.VisitIfStatement(context);
+            return branchCount;
         }
-
-        /// <summary>
-        /// CASE 문 방문 - 각 분기마다 복잡도 +1
-        /// </summary>
-        public override int VisitCaseStatement(StructuredTextParser.CaseStatementContext context)
-        {
-            // CASE 문의 각 case 요소마다 +1
-            var caseElements = context.caseElement();
-            if (caseElements != null)
-            {
-                _complexity += caseElements.Length;
-            }
-
-            // ELSE 절은 복잡도를 증가시키지 않음 (기본 경로)
-
-            return base.VisitCaseStatement(context);
-        }
-
-        /// <summary>
-        /// FOR 문 방문 - 복잡도 +1
-        /// </summary>
-        public override int VisitForStatement(StructuredTextParser.ForStatementContext context)
-        {
-            _complexity++; // FOR 루프 자체로 +1
-
-            return base.VisitForStatement(context);
-        }
-
-        /// <summary>
-        /// WHILE 문 방문 - 복잡도 +1
-        /// </summary>
-        public override int VisitWhileStatement(StructuredTextParser.WhileStatementContext context)
-        {
-            _complexity++; // WHILE 루프 자체로 +1
-
-            return base.VisitWhileStatement(context);
-        }
-
-        /// <summary>
-        /// REPEAT 문 방문 - 복잡도 +1
-        /// </summary>
-        public override int VisitRepeatStatement(StructuredTextParser.RepeatStatementContext context)
-        {
-            _complexity++; // REPEAT 루프 자체로 +1
-
-            return base.VisitRepeatStatement(context);
-        }
-
-        /// <summary>
-        /// 논리 AND 연산자 방문 - 복잡도 +1
-        /// 단, 이는 선택적 구현 (표준 McCabe에서는 제외)
-        /// </summary>
-        public override int VisitExpression(StructuredTextParser.ExpressionContext context)
-        {
-            // 논리 연산자 (&&, ||)를 복잡도에 포함할지 선택
-            // 현재는 제외 (표준 McCabe 방식)
-
-            // 만약 포함하려면:
-            // if (context.op?.Type == StructuredTextParser.AND ||
-            //     context.op?.Type == StructuredTextParser.OR)
-            // {
-            //     _complexity++;
-            // }
-
-            return base.VisitExpression(context);
-        }
-
-        /// <summary>
-        /// EXIT 문 방문 - 복잡도 +1 (선택적)
-        /// </summary>
-        public override int VisitExitStatement(StructuredTextParser.ExitStatementContext context)
-        {
-            // EXIT는 루프의 조기 탈출 경로를 생성하므로 +1
-            _complexity++;
-
-            return base.VisitExitStatement(context);
-        }
-
-        /// <summary>
-        /// RETURN 문 방문 - 복잡도 +1 (선택적)
-        /// </summary>
-        public override int VisitReturnStatement(StructuredTextParser.ReturnStatementContext context)
-        {
-            // 함수 중간의 RETURN은 조기 반환 경로를 생성하므로 +1
-            // 단, 함수 끝의 RETURN은 제외 (기본 경로)
-            _complexity++;
-
-            return base.VisitReturnStatement(context);
-        }
-        */
 
         // ----------------------------------------------------------------------------
         // 복잡도 계산 가이드라인
