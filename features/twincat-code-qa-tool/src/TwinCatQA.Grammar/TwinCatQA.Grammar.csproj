@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Antlr4.Runtime.Standard" Version="4.13.1" />
+    <PackageReference Include="Antlr4BuildTasks" Version="12.11.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- ANTLR4 문법 파일 명시 -->
+    <Antlr4 Include="STLexer.g4">
+      <Generator>MSBuild:Compile</Generator>
+    </Antlr4>
+    <Antlr4 Include="STParser.g4">
+      <Generator>MSBuild:Compile</Generator>
+      <Listener>True</Listener>
+      <Visitor>True</Visitor>
+    </Antlr4>
+  </ItemGroup>
+
+</Project>

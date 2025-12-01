@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="ST_MotorData" Id="{12345678-1234-1234-1234-123456789005}">
+    <Declaration><![CDATA[
+TYPE ST_MotorData :
+STRUCT
+    // 모터 기본 정보
+    nMotorID : INT := 0;                    // 모터 ID (초기화)
+    sMotorName : STRING(80) := '';          // 모터 이름 (초기화)
+
+    // 속도 관련
+    fTargetSpeed : REAL := 0.0;             // 목표 속도 [rpm] (초기화)
+    fCurrentSpeed : REAL := 0.0;            // 현재 속도 [rpm] (초기화)
+    fMaxSpeed : REAL := 2000.0;             // 최대 속도 [rpm] (초기화)
+    fMinSpeed : REAL := 0.0;                // 최소 속도 [rpm] (초기화)
+
+    // 토크 관련
+    fTorque : REAL := 0.0;                  // 현재 토크 [Nm] (초기화)
+    fMaxTorque : REAL := 100.0;             // 최대 토크 [Nm] (초기화)
+
+    // 상태 정보
+    eState : E_MotorState := E_MotorState.IDLE; // 모터 상태 (열거형 사용)
+    bEnabled : BOOL := FALSE;               // 활성화 상태 (초기화)
+    bRunning : BOOL := FALSE;               // 동작 중 (초기화)
+    bFault : BOOL := FALSE;                 // 고장 상태 (초기화)
+    bWarning : BOOL := FALSE;               // 경고 상태 (초기화)
+
+    // 고장 및 경고 코드
+    nFaultCode : INT := 0;                  // 고장 코드 (초기화)
+    nWarningCode : INT := 0;                // 경고 코드 (초기화)
+
+    // 운전 시간
+    tOperationTime : TIME := T#0S;          // 총 운전 시간 (초기화)
+    tLastStartTime : DT;                    // 마지막 시작 시간
+
+    // 온도
+    fMotorTemp : REAL := 0.0;               // 모터 온도 [도C] (초기화)
+    fDriverTemp : REAL := 0.0;              // 드라이버 온도 [도C] (초기화)
+
+    // 전류
+    fCurrent : REAL := 0.0;                 // 현재 전류 [A] (초기화)
+    fMaxCurrent : REAL := 10.0;             // 최대 전류 [A] (초기화)
+
+    // 위치 (서보 모터의 경우)
+    lPosition : LREAL := 0.0;               // 현재 위치 (초기화)
+    lTargetPosition : LREAL := 0.0;         // 목표 위치 (초기화)
+
+    // 개선: 미사용 필드 제거됨
+
+    // 통계
+    nStartCount : DINT := 0;                // 시작 횟수 (초기화)
+    nFaultCount : INT := 0;                 // 고장 발생 횟수 (초기화)
+
+    // 개선: 추가된 유용한 필드
+    fAverageTorque : REAL := 0.0;           // 평균 토크 [Nm]
+    fPeakTorque : REAL := 0.0;              // 피크 토크 [Nm]
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

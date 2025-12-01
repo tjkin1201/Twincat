@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="ST_MotorData" Id="{12345678-1234-1234-1234-123456789005}">
+    <Declaration><![CDATA[
+TYPE ST_MotorData :
+STRUCT
+    // 모터 기본 정보
+    nMotorID : INT;                    // 모터 ID
+    sMotorName : STRING(80);           // 모터 이름
+
+    // 속도 관련
+    fTargetSpeed : REAL;               // 목표 속도 [rpm]
+    fCurrentSpeed : REAL;              // 현재 속도 [rpm]
+    fMaxSpeed : REAL;                  // 최대 속도 [rpm]
+    fMinSpeed : REAL;                  // 최소 속도 [rpm]
+
+    // 토크 관련
+    fTorque : REAL;                    // 현재 토크 [Nm]
+    fMaxTorque : REAL;                 // 최대 토크 [Nm]
+
+    // 상태 정보
+    bEnabled : BOOL;                   // 활성화 상태
+    bRunning : BOOL;                   // 동작 중
+    bFault : BOOL;                     // 고장 상태
+    bWarning : BOOL;                   // 경고 상태
+
+    // 고장 및 경고 코드
+    nFaultCode : INT;                  // 고장 코드
+    nWarningCode : INT;                // 경고 코드
+
+    // 운전 시간
+    tOperationTime : TIME;             // 총 운전 시간
+    tLastStartTime : DT;               // 마지막 시작 시간
+
+    // 온도
+    fMotorTemp : REAL;                 // 모터 온도 [도C]
+    fDriverTemp : REAL;                // 드라이버 온도 [도C]
+
+    // 전류
+    fCurrent : REAL;                   // 현재 전류 [A]
+    fMaxCurrent : REAL;                // 최대 전류 [A]
+
+    // 위치 (서보 모터의 경우)
+    lPosition : LREAL;                 // 현재 위치
+    lTargetPosition : LREAL;           // 목표 위치
+
+    // QA 이슈: 미사용 필드들
+    nUnusedField1 : INT;
+    fUnusedField2 : REAL;
+    bUnusedFlag : BOOL;
+
+    // 통계
+    nStartCount : DINT;                // 시작 횟수
+    nFaultCount : INT;                 // 고장 발생 횟수
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

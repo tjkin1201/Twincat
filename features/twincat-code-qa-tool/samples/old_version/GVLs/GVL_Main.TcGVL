@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <GVL Name="GVL_Main" Id="{12345678-1234-1234-1234-123456789004}">
+    <Declaration><![CDATA[
+{attribute 'qualified_only'}
+VAR_GLOBAL
+    // 시스템 상태
+    bSystemEnable : BOOL := FALSE;        // 시스템 활성화
+    bEmergencyStop : BOOL := FALSE;       // 비상 정지
+    nSystemMode : INT := 0;               // 시스템 모드 (0:수동, 1:자동, 2:알람)
+
+    // QA 이슈: 매직 넘버 대신 상수 정의 필요
+    nMaxSpeed : INT := 2000;              // 최대 속도
+    nMinSpeed : INT := 100;               // 최소 속도
+
+    // 센서 입력
+    bSensor1 : BOOL;                      // 센서 1
+    bSensor2 : BOOL;                      // 센서 2
+    bSensor3 : BOOL;                      // 센서 3
+
+    // 액추에이터 출력
+    bValve1 : BOOL;                       // 밸브 1
+    bValve2 : BOOL;                       // 밸브 2
+
+    // 온도 관련
+    fTemperature1 : REAL;                 // 온도 센서 1 [도C]
+    fTemperature2 : REAL;                 // 온도 센서 2 [도C]
+
+    // QA 이슈: 하드코딩된 임계값 - 상수로 정의해야 함
+    fTempThresholdHigh : REAL := 80.0;    // 고온 경보 임계값
+    fTempThresholdLow : REAL := 10.0;     // 저온 경보 임계값
+
+    // 카운터 및 통계
+    nProductionCount : DINT := 0;         // 생산 카운트
+    nErrorCount : INT := 0;               // 에러 카운트
+    fAverageSpeed : REAL := 0.0;          // 평균 속도
+
+    // 타이밍
+    tCycleTime : TIME := T#10MS;          // 사이클 타임
+    tOperationTime : TIME;                // 총 동작 시간
+
+    // QA 이슈: 미사용 전역 변수들
+    nUnusedGlobalVar1 : INT;
+    fUnusedGlobalVar2 : REAL;
+    bUnusedGlobalFlag : BOOL;
+
+    // 알람 관련
+    aAlarmBuffer : ARRAY[0..99] OF INT;   // 알람 버퍼
+    nAlarmIndex : INT := 0;               // 알람 인덱스
+    bAlarmActive : BOOL := FALSE;         // 알람 활성 상태
+
+    // 통신 데이터
+    nCommStatus : INT;                    // 통신 상태
+    bCommError : BOOL;                    // 통신 에러
+END_VAR
+]]></Declaration>
+  </GVL>
+</TcPlcObject>

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="MAIN" Id="{12345678-1234-1234-1234-123456789001}" SpecialFunc="None">
+    <Declaration><![CDATA[
+PROGRAM MAIN
+VAR
+    fbMotor1 : FB_Motor;              // 모터 제어 Function Block
+    fbMotor2 : FB_Motor;              // 두 번째 모터
+    fbConveyor : FB_Conveyor;         // 컨베이어 제어
+    fbSafety : FB_Safety;             // 안전 제어 (새로 추가)
+
+    nCounter : INT := 0;              // 카운터 (초기화됨)
+    nSpeed : INT := 0;                // 속도 값 (초기화됨)
+    fTemperature : REAL := 0.0;       // 온도 센서 값 (초기화됨)
+    bEmergencyStop : BOOL := FALSE;   // 비상 정지 신호 (초기화됨)
+    bSystemReady : BOOL := FALSE;     // 시스템 준비 상태 (초기화됨)
+
+    nIndex : INT := 0;                // 배열 인덱스 (초기화됨)
+    aDataBuffer : ARRAY[0..99] OF INT; // 데이터 버퍼
+
+    // 개선: 변수 초기화 및 명확한 타입 사용
+    nInitializedValue : DINT := 1000; // 초기화된 값
+
+    // 개선: 미사용 변수 제거됨
+END_VAR
+
+VAR CONSTANT
+    // 개선: 매직 넘버를 상수로 정의
+    MAX_MOTOR_SPEED : INT := 1500;
+    SECONDARY_MOTOR_SPEED : INT := 750;
+    MAX_BUFFER_INDEX : INT := 99;
+    COUNTER_RESET_VALUE : INT := 5000;
+    TEMP_TOLERANCE : REAL := 0.5;     // 온도 허용 오차
+    TEMP_SETPOINT : REAL := 25.5;     // 온도 설정값
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+// 메인 제어 루프
+
+// 카운터 증가
+nCounter := nCounter + 1;
+
+// 개선: 안전한 타입 변환 및 초기화된 변수 사용
+IF nInitializedValue <> 0 THEN
+    nSpeed := DINT_TO_INT(LIMIT(0, nInitializedValue / 100, 32767));
+END_IF
+
+// 개선: REAL 비교 시 허용 오차 사용
+IF ABS(fTemperature - TEMP_SETPOINT) < TEMP_TOLERANCE THEN
+    bSystemReady := TRUE;
+ELSE
+    bSystemReady := FALSE;
+END_IF
+
+// 개선: 배열 경계 검사
+nIndex := nCounter MOD (MAX_BUFFER_INDEX + 1);
+IF nIndex >= 0 AND nIndex <= MAX_BUFFER_INDEX THEN
+    aDataBuffer[nIndex] := nSpeed;
+END_IF
+
+// 안전 제어 실행
+fbSafety.EmergencyStop := bEmergencyStop;
+fbSafety.TemperatureAlarm := fTemperature > 50.0;
+fbSafety();
+
+// 비상 정지 또는 안전 고장 처리
+IF bEmergencyStop OR fbSafety.SafetyFault THEN
+    fbMotor1.Enable := FALSE;
+    fbMotor2.Enable := FALSE;
+    fbConveyor.Enable := FALSE;
+ELSE
+    // 정상 동작
+    fbMotor1.TargetSpeed := nSpeed;
+    fbMotor1.Enable := TRUE;
+    fbMotor1();
+
+    // 개선: 상수 사용
+    IF fbMotor1.CurrentSpeed > MAX_MOTOR_SPEED THEN
+        fbMotor2.TargetSpeed := SECONDARY_MOTOR_SPEED;
+        fbMotor2.Enable := TRUE;
+    END_IF
+
+    fbMotor2();
+
+    // 컨베이어 제어
+    fbConveyor.Speed := fbMotor1.CurrentSpeed * 0.5;
+    fbConveyor.Enable := fbMotor1.IsRunning AND NOT fbMotor1.Fault;
+    fbConveyor();
+END_IF
+
+// 개선: 중첩 조건문을 단순화
+bSystemReady := (nCounter > 100) AND
+                fbMotor1.IsRunning AND
+                fbMotor2.IsRunning AND
+                fbConveyor.Enable AND
+                (fTemperature < 30.0) AND
+                NOT bEmergencyStop;
+
+// 개선: 상수 사용
+IF nCounter > COUNTER_RESET_VALUE THEN
+    nCounter := 0;
+END_IF
+]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

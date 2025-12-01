@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+
+  <!-- UI Text - Buttons -->
+  <data name="Button_Analyze" xml:space="preserve">
+    <value>Analyze</value>
+    <comment>Analyze button text</comment>
+  </data>
+  <data name="Button_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+    <comment>Cancel button text</comment>
+  </data>
+  <data name="Button_OK" xml:space="preserve">
+    <value>OK</value>
+    <comment>OK button text</comment>
+  </data>
+  <data name="Button_Apply" xml:space="preserve">
+    <value>Apply</value>
+    <comment>Apply button text</comment>
+  </data>
+  <data name="Button_Close" xml:space="preserve">
+    <value>Close</value>
+    <comment>Close button text</comment>
+  </data>
+  <data name="Button_Save" xml:space="preserve">
+    <value>Save</value>
+    <comment>Save button text</comment>
+  </data>
+  <data name="Button_Load" xml:space="preserve">
+    <value>Load</value>
+    <comment>Load button text</comment>
+  </data>
+  <data name="Button_Export" xml:space="preserve">
+    <value>Export</value>
+    <comment>Export button text</comment>
+  </data>
+  <data name="Button_Import" xml:space="preserve">
+    <value>Import</value>
+    <comment>Import button text</comment>
+  </data>
+  <data name="Button_Refresh" xml:space="preserve">
+    <value>Refresh</value>
+    <comment>Refresh button text</comment>
+  </data>
+
+  <!-- UI Text - Labels -->
+  <data name="Label_FileName" xml:space="preserve">
+    <value>File Name</value>
+    <comment>File name label</comment>
+  </data>
+  <data name="Label_Severity" xml:space="preserve">
+    <value>Severity</value>
+    <comment>Severity label</comment>
+  </data>
+  <data name="Label_Line" xml:space="preserve">
+    <value>Line</value>
+    <comment>Line number label</comment>
+  </data>
+  <data name="Label_Message" xml:space="preserve">
+    <value>Message</value>
+    <comment>Message label</comment>
+  </data>
+  <data name="Label_RuleName" xml:space="preserve">
+    <value>Rule Name</value>
+    <comment>Rule name label</comment>
+  </data>
+  <data name="Label_Category" xml:space="preserve">
+    <value>Category</value>
+    <comment>Category label</comment>
+  </data>
+  <data name="Label_Status" xml:space="preserve">
+    <value>Status</value>
+    <comment>Status label</comment>
+  </data>
+  <data name="Label_Progress" xml:space="preserve">
+    <value>Progress</value>
+    <comment>Progress label</comment>
+  </data>
+
+  <!-- UI Text - Menus -->
+  <data name="Menu_File" xml:space="preserve">
+    <value>File</value>
+    <comment>File menu</comment>
+  </data>
+  <data name="Menu_Edit" xml:space="preserve">
+    <value>Edit</value>
+    <comment>Edit menu</comment>
+  </data>
+  <data name="Menu_View" xml:space="preserve">
+    <value>View</value>
+    <comment>View menu</comment>
+  </data>
+  <data name="Menu_Tools" xml:space="preserve">
+    <value>Tools</value>
+    <comment>Tools menu</comment>
+  </data>
+  <data name="Menu_Help" xml:space="preserve">
+    <value>Help</value>
+    <comment>Help menu</comment>
+  </data>
+  <data name="Menu_Options" xml:space="preserve">
+    <value>Options</value>
+    <comment>Options menu</comment>
+  </data>
+
+  <!-- UI Text - Tooltips -->
+  <data name="Tooltip_Analyze" xml:space="preserve">
+    <value>Start code analysis</value>
+    <comment>Analyze button tooltip</comment>
+  </data>
+  <data name="Tooltip_Refresh" xml:space="preserve">
+    <value>Refresh the list</value>
+    <comment>Refresh button tooltip</comment>
+  </data>
+  <data name="Tooltip_Export" xml:space="preserve">
+    <value>Export results to file</value>
+    <comment>Export button tooltip</comment>
+  </data>
+  <data name="Tooltip_Filter" xml:space="preserve">
+    <value>Filter results</value>
+    <comment>Filter tooltip</comment>
+  </data>
+
+  <!-- Messages - Errors -->
+  <data name="Error_FileNotFound" xml:space="preserve">
+    <value>File not found: {0}</value>
+    <comment>File not found error</comment>
+  </data>
+  <data name="Error_InvalidFile" xml:space="preserve">
+    <value>Invalid file format: {0}</value>
+    <comment>Invalid file format error</comment>
+  </data>
+  <data name="Error_AnalysisFailed" xml:space="preserve">
+    <value>Analysis failed: {0}</value>
+    <comment>Analysis failed error</comment>
+  </data>
+  <data name="Error_SaveFailed" xml:space="preserve">
+    <value>Failed to save: {0}</value>
+    <comment>Save failed error</comment>
+  </data>
+  <data name="Error_LoadFailed" xml:space="preserve">
+    <value>Failed to load: {0}</value>
+    <comment>Load failed error</comment>
+  </data>
+  <data name="Error_UnexpectedError" xml:space="preserve">
+    <value>Unexpected error occurred: {0}</value>
+    <comment>Unexpected error</comment>
+  </data>
+  <data name="Error_AccessDenied" xml:space="preserve">
+    <value>Access denied to file: {0}</value>
+    <comment>Access denied error</comment>
+  </data>
+
+  <!-- Messages - Warnings -->
+  <data name="Warning_NoIssuesFound" xml:space="preserve">
+    <value>No issues found</value>
+    <comment>No issues warning</comment>
+  </data>
+  <data name="Warning_UnsavedChanges" xml:space="preserve">
+    <value>You have unsaved changes. Do you want to continue?</value>
+    <comment>Unsaved changes warning</comment>
+  </data>
+  <data name="Warning_LargeFile" xml:space="preserve">
+    <value>File is very large. Analysis may take some time</value>
+    <comment>Large file warning</comment>
+  </data>
+  <data name="Warning_RuleDisabled" xml:space="preserve">
+    <value>Some rules are disabled</value>
+    <comment>Rule disabled warning</comment>
+  </data>
+
+  <!-- Messages - Info -->
+  <data name="Info_AnalysisComplete" xml:space="preserve">
+    <value>Analysis completed</value>
+    <comment>Analysis complete info</comment>
+  </data>
+  <data name="Info_IssuesFound" xml:space="preserve">
+    <value>{0} issues found</value>
+    <comment>Issues found info</comment>
+  </data>
+  <data name="Info_FileSaved" xml:space="preserve">
+    <value>File saved: {0}</value>
+    <comment>File saved info</comment>
+  </data>
+  <data name="Info_ExportComplete" xml:space="preserve">
+    <value>Export completed: {0}</value>
+    <comment>Export complete info</comment>
+  </data>
+  <data name="Info_AnalysisProgress" xml:space="preserve">
+    <value>Analyzing... ({0}/{1})</value>
+    <comment>Analysis progress info</comment>
+  </data>
+
+  <!-- Messages - Confirmation -->
+  <data name="Confirm_DeleteRule" xml:space="preserve">
+    <value>Do you want to delete the selected rule?</value>
+    <comment>Delete rule confirmation</comment>
+  </data>
+  <data name="Confirm_ResetSettings" xml:space="preserve">
+    <value>Do you want to reset settings to default?</value>
+    <comment>Reset settings confirmation</comment>
+  </data>
+  <data name="Confirm_ClearResults" xml:space="preserve">
+    <value>Do you want to clear all results?</value>
+    <comment>Clear results confirmation</comment>
+  </data>
+
+  <!-- Rule Names -->
+  <data name="Rule_NamingConvention" xml:space="preserve">
+    <value>Naming Convention</value>
+    <comment>Naming convention rule name</comment>
+  </data>
+  <data name="Rule_UnusedVariable" xml:space="preserve">
+    <value>Unused Variable</value>
+    <comment>Unused variable rule name</comment>
+  </data>
+  <data name="Rule_MagicNumber" xml:space="preserve">
+    <value>Magic Number</value>
+    <comment>Magic number rule name</comment>
+  </data>
+  <data name="Rule_FunctionComplexity" xml:space="preserve">
+    <value>Function Complexity</value>
+    <comment>Function complexity rule name</comment>
+  </data>
+  <data name="Rule_MissingComment" xml:space="preserve">
+    <value>Missing Comment</value>
+    <comment>Missing comment rule name</comment>
+  </data>
+  <data name="Rule_LongFunction" xml:space="preserve">
+    <value>Long Function</value>
+    <comment>Long function rule name</comment>
+  </data>
+  <data name="Rule_DeepNesting" xml:space="preserve">
+    <value>Deep Nesting</value>
+    <comment>Deep nesting rule name</comment>
+  </data>
+
+  <!-- Rule Descriptions -->
+  <data name="RuleDesc_NamingConvention" xml:space="preserve">
+    <value>Checks naming convention for variables, functions, etc.</value>
+    <comment>Naming convention description</comment>
+  </data>
+  <data name="RuleDesc_UnusedVariable" xml:space="preserve">
+    <value>Finds declared but unused variables</value>
+    <comment>Unused variable rule description</comment>
+  </data>
+  <data name="RuleDesc_MagicNumber" xml:space="preserve">
+    <value>Checks for hardcoded numeric literals</value>
+    <comment>Magic number rule description</comment>
+  </data>
+  <data name="RuleDesc_FunctionComplexity" xml:space="preserve">
+    <value>Measures cyclomatic complexity of functions</value>
+    <comment>Function complexity rule description</comment>
+  </data>
+  <data name="RuleDesc_MissingComment" xml:space="preserve">
+    <value>Checks for code that needs comments</value>
+    <comment>Missing comment rule description</comment>
+  </data>
+  <data name="RuleDesc_LongFunction" xml:space="preserve">
+    <value>Finds functions that are too long</value>
+    <comment>Long function rule description</comment>
+  </data>
+  <data name="RuleDesc_DeepNesting" xml:space="preserve">
+    <value>Checks for excessive nesting depth</value>
+    <comment>Deep nesting rule description</comment>
+  </data>
+
+  <!-- Status Messages -->
+  <data name="Status_Ready" xml:space="preserve">
+    <value>Ready</value>
+    <comment>Ready status</comment>
+  </data>
+  <data name="Status_Analyzing" xml:space="preserve">
+    <value>Analyzing...</value>
+    <comment>Analyzing status</comment>
+  </data>
+  <data name="Status_Complete" xml:space="preserve">
+    <value>Complete</value>
+    <comment>Complete status</comment>
+  </data>
+  <data name="Status_Failed" xml:space="preserve">
+    <value>Failed</value>
+    <comment>Failed status</comment>
+  </data>
+  <data name="Status_Cancelled" xml:space="preserve">
+    <value>Cancelled</value>
+    <comment>Cancelled status</comment>
+  </data>
+
+  <!-- Severity Levels -->
+  <data name="Severity_Error" xml:space="preserve">
+    <value>Error</value>
+    <comment>Error severity</comment>
+  </data>
+  <data name="Severity_Warning" xml:space="preserve">
+    <value>Warning</value>
+    <comment>Warning severity</comment>
+  </data>
+  <data name="Severity_Info" xml:space="preserve">
+    <value>Info</value>
+    <comment>Info severity</comment>
+  </data>
+  <data name="Severity_Hint" xml:space="preserve">
+    <value>Hint</value>
+    <comment>Hint severity</comment>
+  </data>
+
+  <!-- Categories -->
+  <data name="Category_Style" xml:space="preserve">
+    <value>Style</value>
+    <comment>Style category</comment>
+  </data>
+  <data name="Category_Performance" xml:space="preserve">
+    <value>Performance</value>
+    <comment>Performance category</comment>
+  </data>
+  <data name="Category_Security" xml:space="preserve">
+    <value>Security</value>
+    <comment>Security category</comment>
+  </data>
+  <data name="Category_Maintainability" xml:space="preserve">
+    <value>Maintainability</value>
+    <comment>Maintainability category</comment>
+  </data>
+</root>

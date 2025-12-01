@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="FB_Conveyor" Id="{12345678-1234-1234-1234-123456789003}" SpecialFunc="None">
+    <Declaration><![CDATA[
+FUNCTION_BLOCK FB_Conveyor
+VAR_INPUT
+    Enable : BOOL;           // 컨베이어 활성화
+    Speed : REAL;            // 속도 [mm/s]
+    Direction : BOOL;        // 방향 (TRUE=전진, FALSE=후진)
+    EmergencyStop : BOOL;    // 비상 정지
+END_VAR
+
+VAR_OUTPUT
+    IsRunning : BOOL;        // 동작 중
+    Position : LREAL;        // 현재 위치 [mm]
+    ProductCount : INT;      // 제품 카운트
+    Alarm : BOOL;            // 알람 상태
+    AlarmCode : INT;         // 알람 코드
+END_VAR
+
+VAR
+    eOperationMode : E_ConveyorMode; // 동작 모드 (열거형 사용)
+    fCurrentSpeed : REAL := 0.0;     // 현재 속도 (초기화)
+    tonProductSensor : TON;          // 제품 감지 타이머
+    bProductDetected : BOOL := FALSE; // 제품 감지 신호 (초기화)
+
+    nCycleCounter : INT := 0;        // 사이클 카운터 (초기화)
+    fPositionIncrement : REAL;       // 위치 증분
+
+    // 개선: 미사용 변수 제거됨
+END_VAR
+
+VAR CONSTANT
+    // 개선: 매직 넘버를 상수로 정의
+    ACCEL_RATE : REAL := 5.0;           // 가속률 [mm/s^2]
+    DECEL_RATE : REAL := 3.0;           // 감속률 [mm/s^2]
+    SPEED_TOLERANCE : REAL := 0.5;      // 속도 허용 오차
+    CYCLE_TIME : REAL := 0.01;          // 사이클 타임 [s]
+    MAX_SPEED_LIMIT : REAL := 1000.0;   // 최대 속도 제한 [mm/s]
+    PRODUCT_DETECT_CYCLE : INT := 500;  // 제품 감지 사이클
+    PRODUCT_COUNT_MAX : INT := 9999;    // 최대 제품 카운트
+    POSITION_RESET_LIMIT : LREAL := 999999.0; // 위치 리셋 한계
+    PRODUCT_SENSOR_TIME : TIME := T#100MS; // 제품 센서 시간
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+// 컨베이어 제어 Function Block
+
+nCycleCounter := nCycleCounter + 1;
+
+// 비상 정지 처리
+IF EmergencyStop THEN
+    IsRunning := FALSE;
+    fCurrentSpeed := 0.0;
+    eOperationMode := E_ConveyorMode.ALARM;
+    Alarm := TRUE;
+    AlarmCode := 201;
+    RETURN;
+END_IF
+
+// 개선: 중첩 조건문을 단순화
+IF Enable AND (Speed > 0.0) AND NOT Alarm AND (eOperationMode <> E_ConveyorMode.ALARM) THEN
+    IsRunning := TRUE;
+
+    // 속도 제어 (개선: 상수 사용)
+    IF fCurrentSpeed < Speed THEN
+        fCurrentSpeed := fCurrentSpeed + ACCEL_RATE;
+    ELSIF fCurrentSpeed > Speed THEN
+        fCurrentSpeed := fCurrentSpeed - ACCEL_RATE;
+    END_IF
+
+    // 개선: REAL 비교 시 허용 오차 사용
+    IF ABS(fCurrentSpeed - Speed) < SPEED_TOLERANCE THEN
+        fCurrentSpeed := Speed;
+    END_IF
+ELSE
+    IsRunning := FALSE;
+
+    // 감속 처리
+    IF fCurrentSpeed > 0.0 THEN
+        fCurrentSpeed := fCurrentSpeed - DECEL_RATE;
+        IF fCurrentSpeed < 0.0 THEN
+            fCurrentSpeed := 0.0;
+        END_IF
+    ELSE
+        fCurrentSpeed := 0.0;
+    END_IF
+END_IF
+
+// 위치 계산 (개선: 상수 사용)
+IF Direction THEN
+    fPositionIncrement := fCurrentSpeed * CYCLE_TIME;
+ELSE
+    fPositionIncrement := -fCurrentSpeed * CYCLE_TIME;
+END_IF
+
+Position := Position + fPositionIncrement;
+
+// 제품 감지 시뮬레이션 (개선: 상수 사용)
+IF nCycleCounter MOD PRODUCT_DETECT_CYCLE = 0 THEN
+    bProductDetected := TRUE;
+ELSE
+    bProductDetected := FALSE;
+END_IF
+
+// 제품 카운팅
+tonProductSensor(IN := bProductDetected, PT := PRODUCT_SENSOR_TIME);
+IF tonProductSensor.Q THEN
+    ProductCount := ProductCount + 1;
+    tonProductSensor(IN := FALSE);
+
+    // 개선: 상수 사용
+    IF ProductCount > PRODUCT_COUNT_MAX THEN
+        ProductCount := 0;
+    END_IF
+END_IF
+
+// 과속도 알람 체크 (개선: 상수 사용)
+IF fCurrentSpeed > MAX_SPEED_LIMIT THEN
+    Alarm := TRUE;
+    AlarmCode := 202;
+    eOperationMode := E_ConveyorMode.ALARM;
+END_IF
+
+// 개선: 중첩 조건문을 단순화
+IF IsRunning AND (ProductCount > 100) AND (fCurrentSpeed > 500.0) AND (nCycleCounter > 10000) THEN
+    eOperationMode := E_ConveyorMode.RUNNING;
+END_IF
+
+// 알람 리셋 (개선: 명확한 조건)
+IF NOT Enable AND NOT IsRunning AND Alarm AND (AlarmCode = 202) THEN
+    Alarm := FALSE;
+    AlarmCode := 0;
+    eOperationMode := E_ConveyorMode.STOPPED;
+END_IF
+
+// 개선: 명시적 타입 변환
+IF Position > POSITION_RESET_LIMIT THEN
+    Position := 0.0;
+END_IF
+]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

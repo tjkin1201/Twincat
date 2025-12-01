@@ -1,0 +1,339 @@
+﻿<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>TwinCAT QA 분석 리포트</title>
+    <style>
+        :root {
+            --critical-color: #dc3545;
+            --warning-color: #ffc107;
+            --info-color: #17a2b8;
+            --bg-dark: #1a1a2e;
+            --bg-card: #16213e;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: var(--bg-dark);
+            color: #eee;
+            line-height: 1.6;
+        }
+        .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+        header h1 { font-size: 2em; margin-bottom: 10px; }
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        .summary-card {
+            background: var(--bg-card);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid #0f3460;
+        }
+        .summary-card .number { font-size: 2.5em; font-weight: bold; margin-bottom: 5px; }
+        .summary-card.critical .number { color: var(--critical-color); }
+        .summary-card.warning .number { color: var(--warning-color); }
+        .summary-card.info .number { color: var(--info-color); }
+        .section {
+            background: var(--bg-card);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .section h2 { color: #667eea; margin-bottom: 15px; border-bottom: 1px solid #0f3460; padding-bottom: 10px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 10px; text-align: left; border-bottom: 1px solid #0f3460; }
+        th { background: rgba(0,0,0,0.3); }
+        .badge { padding: 3px 10px; border-radius: 12px; font-size: 0.8em; }
+        .badge.critical { background: var(--critical-color); }
+        .badge.warning { background: var(--warning-color); color: #000; }
+        .badge.info { background: var(--info-color); }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>TwinCAT QA 분석 리포트</h1>
+        <p>프로젝트: D:\00.Comapre\pollux_hcds_ald_mirror\Src_Diff\PLC\PM1\PM1</p>
+        <p>분석 일시: 2025-11-26 11:54:28</p>
+    </header>
+
+    <div class="summary-grid">
+        <div class="summary-card">
+            <div class="number">300</div>
+            <div class="label">총 파일</div>
+        </div>
+        <div class="summary-card">
+            <div class="number">6,463</div>
+            <div class="label">코드 라인</div>
+        </div>
+        <div class="summary-card">
+            <div class="number">1100</div>
+            <div class="label">총 이슈</div>
+        </div>
+        <div class="summary-card critical">
+            <div class="number">878</div>
+            <div class="label">Critical</div>
+        </div>
+        <div class="summary-card warning">
+            <div class="number">185</div>
+            <div class="label">Warning</div>
+        </div>
+        <div class="summary-card info">
+            <div class="number">37</div>
+            <div class="label">Info</div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Critical Issues (878)</h2>
+        <table>
+            <tr><th>파일</th><th>라인</th><th>규칙</th><th>메시지</th></tr>
+            <tr><td>MAIN.TcPOU</td><td>81</td><td>QA006</td><td>0으로 나누기 가능성</td></tr>
+<tr><td>MAIN.TcPOU</td><td>104</td><td>QA006</td><td>0으로 나누기 가능성</td></tr>
+<tr><td>MAIN.TcPOU</td><td>142</td><td>QA006</td><td>0으로 나누기 가능성</td></tr>
+<tr><td>MAIN.TcPOU</td><td>195</td><td>QA006</td><td>0으로 나누기 가능성</td></tr>
+<tr><td>MAIN.TcPOU</td><td>204</td><td>QA006</td><td>0으로 나누기 가능성</td></tr>
+<tr><td>MAIN.TcPOU</td><td>205</td><td>QA006</td><td>0으로 나누기 가능성</td></tr>
+<tr><td>FindValue_Inverse_TempParaTable.TcPOU</td><td>11</td><td>QA001</td><td>초기화되지 않은 중요 변수 (REAL/LREAL/포인터)</td></tr>
+<tr><td>FindValue_Inverse_TempParaTable.TcPOU</td><td>12</td><td>QA001</td><td>초기화되지 않은 중요 변수 (REAL/LREAL/포인터)</td></tr>
+<tr><td>FindValue_Inverse_TempParaTable.TcPOU</td><td>14</td><td>QA001</td><td>초기화되지 않은 중요 변수 (REAL/LREAL/포인터)</td></tr>
+<tr><td>FindValue_Inverse_TempParaTable.TcPOU</td><td>15</td><td>QA001</td><td>초기화되지 않은 중요 변수 (REAL/LREAL/포인터)</td></tr>
+<tr><td>FindValue_TempParaTable.TcPOU</td><td>11</td><td>QA001</td><td>초기화되지 않은 중요 변수 (REAL/LREAL/포인터)</td></tr>
+<tr><td>FindValue_TempParaTable.TcPOU</td><td>12</td><td>QA001</td><td>초기화되지 않은 중요 변수 (REAL/LREAL/포인터)</td></tr>
+<tr><td>FindValue_TempParaTable.TcPOU</td><td>14</td><td>QA001</td><td>초기화되지 않은 중요 변수 (REAL/LREAL/포인터)</td></tr>
+<tr><td>FindValue_TempParaTable.TcPOU</td><td>15</td><td>QA001</td><td>초기화되지 않은 중요 변수 (REAL/LREAL/포인터)</td></tr>
+<tr><td>F_Cycle_StepCount.TcPOU</td><td>9</td><td>QA006</td><td>0으로 나누기 가능성</td></tr>
+<tr><td>F_Cycle_StepCount.TcPOU</td><td>24</td><td>QA006</td><td>0으로 나누기 가능성</td></tr>
+<tr><td>F_Cycle_StepCount.TcPOU</td><td>27</td><td>QA006</td><td>0으로 나누기 가능성</td></tr>
+<tr><td>F_Cycle_StepCount.TcPOU</td><td>36</td><td>QA006</td><td>0으로 나누기 가능성</td></tr>
+<tr><td>F_Cycle_StepCount_1.TcPOU</td><td>9</td><td>QA006</td><td>0으로 나누기 가능성</td></tr>
+<tr><td>F_Cycle_StepCount_1.TcPOU</td><td>24</td><td>QA006</td><td>0으로 나누기 가능성</td></tr>
+<tr><td>F_Cycle_StepCount_1.TcPOU</td><td>27</td><td>QA006</td><td>0으로 나누기 가능성</td></tr>
+<tr><td>F_Cycle_StepCount_1.TcPOU</td><td>36</td><td>QA006</td><td>0으로 나누기 가능성</td></tr>
+<tr><td>F_Driver_APC_PID.TcPOU</td><td>4</td><td>QA001</td><td>초기화되지 않은 중요 변수 (REAL/LREAL/포인터)</td></tr>
+<tr><td>F_Driver_Heater_Write_Array.TcPOU</td><td>12</td><td>QA001</td><td>초기화되지 않은 중요 변수 (REAL/LREAL/포인터)</td></tr>
+<tr><td>F_EventLog_Shift.TcPOU</td><td>1</td><td>QA001</td><td>초기화되지 않은 중요 변수 (REAL/LREAL/포인터)</td></tr>
+<tr><td>F_EventLog_Shift.TcPOU</td><td>11</td><td>QA001</td><td>초기화되지 않은 중요 변수 (REAL/LREAL/포인터)</td></tr>
+<tr><td>F_Function_LV_Log.TcPOU</td><td>3</td><td>QA001</td><td>초기화되지 않은 중요 변수 (REAL/LREAL/포인터)</td></tr>
+<tr><td>F_Function_Process_Log.TcPOU</td><td>3</td><td>QA001</td><td>초기화되지 않은 중요 변수 (REAL/LREAL/포인터)</td></tr>
+<tr><td>F_Get_Parameter.TcPOU</td><td>2</td><td>QA006</td><td>0으로 나누기 가능성</td></tr>
+<tr><td>F_Get_Parameter.TcPOU</td><td>3</td><td>QA006</td><td>0으로 나누기 가능성</td></tr>
+<tr><td>F_Get_Parameter.TcPOU</td><td>4</td><td>QA006</td><td>0으로 나누기 가능성</td></tr>
+<tr><td>F_Get_Parameter.TcPOU</td><td>5</td><td>QA006</td><td>0으로 나누기 가능성</td></tr>
+<tr><td>F_Parameter_Check.TcPOU</td><td>4</td><td>QA001</td><td>초기화되지 않은 중요 변수 (REAL/LREAL/포인터)</td></tr>
+<tr><td>F_Parameter_Check.TcPOU</td><td>11</td><td>QA001</td><td>초기화되지 않은 중요 변수 (REAL/LREAL/포인터)</td></tr>
+<tr><td>F_RealRound.TcPOU</td><td>1</td><td>QA001</td><td>초기화되지 않은 중요 변수 (REAL/LREAL/포인터)</td></tr>
+<tr><td>F_RealRound.TcPOU</td><td>3</td><td>QA001</td><td>초기화되지 않은 중요 변수 (REAL/LREAL/포인터)</td></tr>
+<tr><td>F_RealRound.TcPOU</td><td>1</td><td>QA006</td><td>0으로 나누기 가능성</td></tr>
+<tr><td>F_Set_Parameter.TcPOU</td><td>3</td><td>QA001</td><td>초기화되지 않은 중요 변수 (REAL/LREAL/포인터)</td></tr>
+<tr><td>F_Set_Parameter.TcPOU</td><td>11</td><td>QA001</td><td>초기화되지 않은 중요 변수 (REAL/LREAL/포인터)</td></tr>
+<tr><td>Get_IEEE754.TcPOU</td><td>1</td><td>QA001</td><td>초기화되지 않은 중요 변수 (REAL/LREAL/포인터)</td></tr>
+<tr><td>Get_IEEE754.TcPOU</td><td>7</td><td>QA001</td><td>초기화되지 않은 중요 변수 (REAL/LREAL/포인터)</td></tr>
+<tr><td>Put_IEEE754.TcPOU</td><td>3</td><td>QA001</td><td>초기화되지 않은 중요 변수 (REAL/LREAL/포인터)</td></tr>
+<tr><td>REAL_ROUND.TcPOU</td><td>1</td><td>QA001</td><td>초기화되지 않은 중요 변수 (REAL/LREAL/포인터)</td></tr>
+<tr><td>REAL_ROUND.TcPOU</td><td>3</td><td>QA001</td><td>초기화되지 않은 중요 변수 (REAL/LREAL/포인터)</td></tr>
+<tr><td>REAL_ROUND.TcPOU</td><td>2</td><td>QA006</td><td>0으로 나누기 가능성</td></tr>
+<tr><td>REAL_ROUND.TcPOU</td><td>4</td><td>QA006</td><td>0으로 나누기 가능성</td></tr>
+<tr><td>REAL_TO_STR.TcPOU</td><td>3</td><td>QA001</td><td>초기화되지 않은 중요 변수 (REAL/LREAL/포인터)</td></tr>
+<tr><td>REAL_TO_STR.TcPOU</td><td>7</td><td>QA001</td><td>초기화되지 않은 중요 변수 (REAL/LREAL/포인터)</td></tr>
+<tr><td>REAL_TO_STR.TcPOU</td><td>6</td><td>QA002</td><td>위험한 타입 변환: REAL→DINT</td></tr>
+<tr><td>FB_Alarm.TcPOU</td><td>19</td><td>QA006</td><td>0으로 나누기 가능성</td></tr>
+<tr><td>FB_BasicPID_RSD.TcPOU</td><td>4</td><td>QA001</td><td>초기화되지 않은 중요 변수 (REAL/LREAL/포인터)</td></tr>
+<tr><td>FB_BasicPID_RSD.TcPOU</td><td>5</td><td>QA001</td><td>초기화되지 않은 중요 변수 (REAL/LREAL/포인터)</td></tr>
+<tr><td>FB_BasicPID_RSD.TcPOU</td><td>9</td><td>QA001</td><td>초기화되지 않은 중요 변수 (REAL/LREAL/포인터)</td></tr>
+<tr><td>FB_BasicPID_RSD.TcPOU</td><td>15</td><td>QA001</td><td>초기화되지 않은 중요 변수 (REAL/LREAL/포인터)</td></tr>
+<tr><td>FB_BasicPID_RSD.TcPOU</td><td>16</td><td>QA001</td><td>초기화되지 않은 중요 변수 (REAL/LREAL/포인터)</td></tr>
+<tr><td>FB_BasicPID_RSD.TcPOU</td><td>17</td><td>QA001</td><td>초기화되지 않은 중요 변수 (REAL/LREAL/포인터)</td></tr>
+<tr><td>FB_BasicPID_RSD.TcPOU</td><td>18</td><td>QA001</td><td>초기화되지 않은 중요 변수 (REAL/LREAL/포인터)</td></tr>
+<tr><td>FB_BasicPID_RSD.TcPOU</td><td>23</td><td>QA001</td><td>초기화되지 않은 중요 변수 (REAL/LREAL/포인터)</td></tr>
+<tr><td>FB_Collection.TcPOU</td><td>19</td><td>QA006</td><td>0으로 나누기 가능성</td></tr>
+<tr><td>FB_Control_Gas.TcPOU</td><td>15</td><td>QA001</td><td>초기화되지 않은 중요 변수 (REAL/LREAL/포인터)</td></tr>
+<tr><td>FB_Control_Gas.TcPOU</td><td>16</td><td>QA001</td><td>초기화되지 않은 중요 변수 (REAL/LREAL/포인터)</td></tr>
+<tr><td>FB_Control_Gas.TcPOU</td><td>17</td><td>QA001</td><td>초기화되지 않은 중요 변수 (REAL/LREAL/포인터)</td></tr>
+<tr><td>FB_Control_Gas.TcPOU</td><td>18</td><td>QA001</td><td>초기화되지 않은 중요 변수 (REAL/LREAL/포인터)</td></tr>
+<tr><td>FB_Control_Gas.TcPOU</td><td>19</td><td>QA001</td><td>초기화되지 않은 중요 변수 (REAL/LREAL/포인터)</td></tr>
+<tr><td>FB_Control_Gas.TcPOU</td><td>20</td><td>QA001</td><td>초기화되지 않은 중요 변수 (REAL/LREAL/포인터)</td></tr>
+<tr><td>FB_Control_Gas.TcPOU</td><td>21</td><td>QA001</td><td>초기화되지 않은 중요 변수 (REAL/LREAL/포인터)</td></tr>
+<tr><td>FB_Control_Gas.TcPOU</td><td>22</td><td>QA001</td><td>초기화되지 않은 중요 변수 (REAL/LREAL/포인터)</td></tr>
+<tr><td>FB_Control_Gas.TcPOU</td><td>23</td><td>QA001</td><td>초기화되지 않은 중요 변수 (REAL/LREAL/포인터)</td></tr>
+<tr><td>FB_Control_Gas.TcPOU</td><td>24</td><td>QA001</td><td>초기화되지 않은 중요 변수 (REAL/LREAL/포인터)</td></tr>
+<tr><td>FB_Control_Gas.TcPOU</td><td>42</td><td>QA001</td><td>초기화되지 않은 중요 변수 (REAL/LREAL/포인터)</td></tr>
+<tr><td>FB_Control_Gas.TcPOU</td><td>43</td><td>QA001</td><td>초기화되지 않은 중요 변수 (REAL/LREAL/포인터)</td></tr>
+<tr><td>FB_Control_Gas.TcPOU</td><td>48</td><td>QA001</td><td>초기화되지 않은 중요 변수 (REAL/LREAL/포인터)</td></tr>
+<tr><td>FB_Control_Gas.TcPOU</td><td>49</td><td>QA001</td><td>초기화되지 않은 중요 변수 (REAL/LREAL/포인터)</td></tr>
+<tr><td>FB_Control_Gas.TcPOU</td><td>58</td><td>QA006</td><td>0으로 나누기 가능성</td></tr>
+<tr><td>FB_Control_Gas.TcPOU</td><td>67</td><td>QA006</td><td>0으로 나누기 가능성</td></tr>
+<tr><td>FB_Control_Gas.TcPOU</td><td>71</td><td>QA006</td><td>0으로 나누기 가능성</td></tr>
+<tr><td>FB_Interlock_Heater_Group_Scan.TcPOU</td><td>3</td><td>QA001</td><td>초기화되지 않은 중요 변수 (REAL/LREAL/포인터)</td></tr>
+<tr><td>FB_Interlock_Heater_Group_Scan.TcPOU</td><td>16</td><td>QA001</td><td>초기화되지 않은 중요 변수 (REAL/LREAL/포인터)</td></tr>
+<tr><td>FB_Interlock_Module.TcPOU</td><td>11</td><td>QA001</td><td>초기화되지 않은 중요 변수 (REAL/LREAL/포인터)</td></tr>
+<tr><td>FB_Interlock_Module.TcPOU</td><td>13</td><td>QA001</td><td>초기화되지 않은 중요 변수 (REAL/LREAL/포인터)</td></tr>
+<tr><td>FB_Interlock_Signal.TcPOU</td><td>5</td><td>QA006</td><td>0으로 나누기 가능성</td></tr>
+<tr><td>FB_Interlock_Signal_Temp.TcPOU</td><td>7</td><td>QA006</td><td>0으로 나누기 가능성</td></tr>
+<tr><td>FB_Interlock_TempDelay.TcPOU</td><td>4</td><td>QA001</td><td>초기화되지 않은 중요 변수 (REAL/LREAL/포인터)</td></tr>
+<tr><td>FB_Sdo_Gas.TcPOU</td><td>6</td><td>QA001</td><td>초기화되지 않은 중요 변수 (REAL/LREAL/포인터)</td></tr>
+<tr><td>FB_Sdo_Gas.TcPOU</td><td>15</td><td>QA001</td><td>초기화되지 않은 중요 변수 (REAL/LREAL/포인터)</td></tr>
+<tr><td>FB_Sdo_Gas.TcPOU</td><td>35</td><td>QA001</td><td>초기화되지 않은 중요 변수 (REAL/LREAL/포인터)</td></tr>
+<tr><td>FB_Sdo_Gas.TcPOU</td><td>36</td><td>QA001</td><td>초기화되지 않은 중요 변수 (REAL/LREAL/포인터)</td></tr>
+<tr><td>FB_Sdo_Gas.TcPOU</td><td>37</td><td>QA001</td><td>초기화되지 않은 중요 변수 (REAL/LREAL/포인터)</td></tr>
+<tr><td>FB_Sdo_Gas.TcPOU</td><td>38</td><td>QA001</td><td>초기화되지 않은 중요 변수 (REAL/LREAL/포인터)</td></tr>
+<tr><td>FB_Sdo_Gas.TcPOU</td><td>46</td><td>QA001</td><td>초기화되지 않은 중요 변수 (REAL/LREAL/포인터)</td></tr>
+<tr><td>FB_Sdo_Gas.TcPOU</td><td>51</td><td>QA001</td><td>초기화되지 않은 중요 변수 (REAL/LREAL/포인터)</td></tr>
+<tr><td>FB_Sdo_Gas.TcPOU</td><td>83</td><td>QA001</td><td>초기화되지 않은 중요 변수 (REAL/LREAL/포인터)</td></tr>
+<tr><td>FB_Sdo_Gas.TcPOU</td><td>84</td><td>QA001</td><td>초기화되지 않은 중요 변수 (REAL/LREAL/포인터)</td></tr>
+<tr><td>FB_Sdo_Gas_PartsPara.TcPOU</td><td>46</td><td>QA001</td><td>초기화되지 않은 중요 변수 (REAL/LREAL/포인터)</td></tr>
+<tr><td>FB_Sdo_Gas_PartsPara.TcPOU</td><td>47</td><td>QA001</td><td>초기화되지 않은 중요 변수 (REAL/LREAL/포인터)</td></tr>
+<tr><td>FB_Sdo_Gas_PartsPara.TcPOU</td><td>48</td><td>QA001</td><td>초기화되지 않은 중요 변수 (REAL/LREAL/포인터)</td></tr>
+<tr><td>FB_Sdo_Gas_PartsPara.TcPOU</td><td>49</td><td>QA001</td><td>초기화되지 않은 중요 변수 (REAL/LREAL/포인터)</td></tr>
+<tr><td>FB_Sdo_Gas_PartsPara.TcPOU</td><td>50</td><td>QA001</td><td>초기화되지 않은 중요 변수 (REAL/LREAL/포인터)</td></tr>
+<tr><td>FB_Sdo_Gas_PartsPara.TcPOU</td><td>56</td><td>QA001</td><td>초기화되지 않은 중요 변수 (REAL/LREAL/포인터)</td></tr>
+<tr><td>FB_Sdo_Gas_PartsPara.TcPOU</td><td>57</td><td>QA001</td><td>초기화되지 않은 중요 변수 (REAL/LREAL/포인터)</td></tr>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2>Warning Issues (185)</h2>
+        <table>
+            <tr><th>파일</th><th>라인</th><th>규칙</th><th>메시지</th></tr>
+            <tr><td>MAIN.TcPOU</td><td>1</td><td>QA010</td><td>긴 함수: 205줄 (권장: 100줄 이하)</td></tr>
+<tr><td>F_CheckMainZone.TcPOU</td><td>1</td><td>QA007</td><td>매직 넘버 사용: 12</td></tr>
+<tr><td>F_CheckMainZone.TcPOU</td><td>17</td><td>QA007</td><td>매직 넘버 사용: 11</td></tr>
+<tr><td>F_CheckMainZone.TcPOU</td><td>6</td><td>QA008</td><td>CASE 문에 ELSE 없음</td></tr>
+<tr><td>F_Cycle_StepCount.TcPOU</td><td>1</td><td>QA014</td><td>순환 복잡도가 높음: 16</td></tr>
+<tr><td>F_Cycle_StepCount_1.TcPOU</td><td>1</td><td>QA014</td><td>순환 복잡도가 높음: 16</td></tr>
+<tr><td>FB_Alarm.TcPOU</td><td>21</td><td>QA009</td><td>깊은 중첩 감지 (depth: 5)</td></tr>
+<tr><td>FB_Alarm.TcPOU</td><td>34</td><td>QA009</td><td>깊은 중첩 감지 (depth: 5)</td></tr>
+<tr><td>FB_Alarm.TcPOU</td><td>1</td><td>QA014</td><td>순환 복잡도가 높음: 24</td></tr>
+<tr><td>FB_BasicPID_RSD.TcPOU</td><td>22</td><td>QA007</td><td>매직 넘버 사용: 60</td></tr>
+<tr><td>FB_BasicPID_RSD.TcPOU</td><td>1</td><td>QA010</td><td>긴 함수: 118줄 (권장: 100줄 이하)</td></tr>
+<tr><td>FB_BasicPID_RSD.TcPOU</td><td>1</td><td>QA014</td><td>순환 복잡도가 높음: 23</td></tr>
+<tr><td>FB_Control_Gas.TcPOU</td><td>68</td><td>QA007</td><td>매직 넘버 사용: 32767</td></tr>
+<tr><td>SEQ_Driver_APC.TcPOU</td><td>43</td><td>QA007</td><td>매직 넘버 사용: 11</td></tr>
+<tr><td>SEQ_Driver_APC.TcPOU</td><td>50</td><td>QA007</td><td>매직 넘버 사용: 12</td></tr>
+<tr><td>SEQ_Driver_APC.TcPOU</td><td>55</td><td>QA007</td><td>매직 넘버 사용: 904</td></tr>
+<tr><td>SEQ_Driver_APC.TcPOU</td><td>65</td><td>QA007</td><td>매직 넘버 사용: 20</td></tr>
+<tr><td>SEQ_Driver_APC.TcPOU</td><td>71</td><td>QA007</td><td>매직 넘버 사용: 21</td></tr>
+<tr><td>SEQ_Driver_APC.TcPOU</td><td>78</td><td>QA007</td><td>매직 넘버 사용: 22</td></tr>
+<tr><td>SEQ_Driver_APC.TcPOU</td><td>83</td><td>QA007</td><td>매직 넘버 사용: 904</td></tr>
+<tr><td>SEQ_Driver_APC.TcPOU</td><td>93</td><td>QA007</td><td>매직 넘버 사용: 30</td></tr>
+<tr><td>SEQ_Driver_APC.TcPOU</td><td>101</td><td>QA007</td><td>매직 넘버 사용: 31</td></tr>
+<tr><td>SEQ_Driver_APC.TcPOU</td><td>106</td><td>QA007</td><td>매직 넘버 사용: 904</td></tr>
+<tr><td>SEQ_Driver_APC.TcPOU</td><td>115</td><td>QA007</td><td>매직 넘버 사용: 40</td></tr>
+<tr><td>SEQ_Driver_APC.TcPOU</td><td>121</td><td>QA007</td><td>매직 넘버 사용: 41</td></tr>
+<tr><td>SEQ_Driver_APC.TcPOU</td><td>131</td><td>QA007</td><td>매직 넘버 사용: 42</td></tr>
+<tr><td>SEQ_Driver_APC.TcPOU</td><td>136</td><td>QA007</td><td>매직 넘버 사용: 904</td></tr>
+<tr><td>SEQ_Driver_APC.TcPOU</td><td>147</td><td>QA007</td><td>매직 넘버 사용: 50</td></tr>
+<tr><td>SEQ_Driver_APC.TcPOU</td><td>164</td><td>QA007</td><td>매직 넘버 사용: 51</td></tr>
+<tr><td>SEQ_Driver_APC.TcPOU</td><td>169</td><td>QA007</td><td>매직 넘버 사용: 904</td></tr>
+<tr><td>SEQ_Driver_APC.TcPOU</td><td>177</td><td>QA007</td><td>매직 넘버 사용: 150</td></tr>
+<tr><td>SEQ_Driver_APC.TcPOU</td><td>189</td><td>QA007</td><td>매직 넘버 사용: 151</td></tr>
+<tr><td>SEQ_Driver_APC.TcPOU</td><td>197</td><td>QA007</td><td>매직 넘버 사용: 152</td></tr>
+<tr><td>SEQ_Driver_APC.TcPOU</td><td>205</td><td>QA007</td><td>매직 넘버 사용: 153</td></tr>
+<tr><td>SEQ_Driver_APC.TcPOU</td><td>213</td><td>QA007</td><td>매직 넘버 사용: 154</td></tr>
+<tr><td>SEQ_Driver_APC.TcPOU</td><td>216</td><td>QA007</td><td>매직 넘버 사용: 200</td></tr>
+<tr><td>SEQ_Driver_APC.TcPOU</td><td>228</td><td>QA007</td><td>매직 넘버 사용: 201</td></tr>
+<tr><td>SEQ_Driver_APC.TcPOU</td><td>236</td><td>QA007</td><td>매직 넘버 사용: 202</td></tr>
+<tr><td>SEQ_Driver_APC.TcPOU</td><td>244</td><td>QA007</td><td>매직 넘버 사용: 203</td></tr>
+<tr><td>SEQ_Driver_APC.TcPOU</td><td>252</td><td>QA007</td><td>매직 넘버 사용: 204</td></tr>
+<tr><td>SEQ_Driver_APC.TcPOU</td><td>260</td><td>QA007</td><td>매직 넘버 사용: 205</td></tr>
+<tr><td>SEQ_Driver_APC.TcPOU</td><td>268</td><td>QA007</td><td>매직 넘버 사용: 206</td></tr>
+<tr><td>SEQ_Driver_APC.TcPOU</td><td>276</td><td>QA007</td><td>매직 넘버 사용: 207</td></tr>
+<tr><td>SEQ_Driver_APC.TcPOU</td><td>286</td><td>QA007</td><td>매직 넘버 사용: 220</td></tr>
+<tr><td>SEQ_Driver_APC.TcPOU</td><td>293</td><td>QA007</td><td>매직 넘버 사용: 221</td></tr>
+<tr><td>SEQ_Driver_APC.TcPOU</td><td>307</td><td>QA007</td><td>매직 넘버 사용: 222</td></tr>
+<tr><td>SEQ_Driver_APC.TcPOU</td><td>318</td><td>QA007</td><td>매직 넘버 사용: 223</td></tr>
+<tr><td>SEQ_Driver_APC.TcPOU</td><td>336</td><td>QA007</td><td>매직 넘버 사용: 190</td></tr>
+<tr><td>SEQ_Driver_APC.TcPOU</td><td>343</td><td>QA007</td><td>매직 넘버 사용: 191</td></tr>
+<tr><td>SEQ_Driver_APC.TcPOU</td><td>357</td><td>QA007</td><td>매직 넘버 사용: 192</td></tr>
+<tr><td>SEQ_Driver_APC.TcPOU</td><td>368</td><td>QA007</td><td>매직 넘버 사용: 193</td></tr>
+<tr><td>SEQ_Driver_APC.TcPOU</td><td>1</td><td>QA010</td><td>긴 함수: 392줄 (권장: 100줄 이하)</td></tr>
+<tr><td>SEQ_Driver_APC.TcPOU</td><td>1</td><td>QA014</td><td>순환 복잡도가 높음: 52</td></tr>
+<tr><td>SEQ_Driver_NGK_O2Analyzer.TcPOU</td><td>16</td><td>QA008</td><td>CASE 문에 ELSE 없음</td></tr>
+<tr><td>SEQ_Driver_NGK_O2Analyzer.TcPOU</td><td>1</td><td>QA010</td><td>긴 함수: 114줄 (권장: 100줄 이하)</td></tr>
+<tr><td>SEQ_Driver_O2Analyzer.TcPOU</td><td>144</td><td>QA007</td><td>매직 넘버 사용: 101</td></tr>
+<tr><td>SEQ_Driver_O2Analyzer.TcPOU</td><td>155</td><td>QA007</td><td>매직 넘버 사용: 102</td></tr>
+<tr><td>SEQ_Driver_O2Analyzer.TcPOU</td><td>164</td><td>QA007</td><td>매직 넘버 사용: 103</td></tr>
+<tr><td>SEQ_Driver_O2Analyzer.TcPOU</td><td>171</td><td>QA007</td><td>매직 넘버 사용: 104</td></tr>
+<tr><td>SEQ_Driver_O2Analyzer.TcPOU</td><td>180</td><td>QA007</td><td>매직 넘버 사용: 105</td></tr>
+<tr><td>SEQ_Driver_O2Analyzer.TcPOU</td><td>197</td><td>QA007</td><td>매직 넘버 사용: 106</td></tr>
+<tr><td>SEQ_Driver_O2Analyzer.TcPOU</td><td>206</td><td>QA007</td><td>매직 넘버 사용: 107</td></tr>
+<tr><td>SEQ_Driver_O2Analyzer.TcPOU</td><td>213</td><td>QA007</td><td>매직 넘버 사용: 108</td></tr>
+<tr><td>SEQ_Driver_O2Analyzer.TcPOU</td><td>222</td><td>QA007</td><td>매직 넘버 사용: 109</td></tr>
+<tr><td>SEQ_Driver_O2Analyzer.TcPOU</td><td>237</td><td>QA007</td><td>매직 넘버 사용: 110</td></tr>
+<tr><td>SEQ_Driver_O2Analyzer.TcPOU</td><td>246</td><td>QA007</td><td>매직 넘버 사용: 111</td></tr>
+<tr><td>SEQ_Driver_O2Analyzer.TcPOU</td><td>253</td><td>QA007</td><td>매직 넘버 사용: 112</td></tr>
+<tr><td>SEQ_Driver_O2Analyzer.TcPOU</td><td>262</td><td>QA007</td><td>매직 넘버 사용: 113</td></tr>
+<tr><td>SEQ_Driver_O2Analyzer.TcPOU</td><td>277</td><td>QA007</td><td>매직 넘버 사용: 114</td></tr>
+<tr><td>SEQ_Driver_O2Analyzer.TcPOU</td><td>286</td><td>QA007</td><td>매직 넘버 사용: 115</td></tr>
+<tr><td>SEQ_Driver_O2Analyzer.TcPOU</td><td>293</td><td>QA007</td><td>매직 넘버 사용: 116</td></tr>
+<tr><td>SEQ_Driver_O2Analyzer.TcPOU</td><td>302</td><td>QA007</td><td>매직 넘버 사용: 117</td></tr>
+<tr><td>SEQ_Driver_O2Analyzer.TcPOU</td><td>317</td><td>QA007</td><td>매직 넘버 사용: 118</td></tr>
+<tr><td>SEQ_Driver_O2Analyzer.TcPOU</td><td>326</td><td>QA007</td><td>매직 넘버 사용: 119</td></tr>
+<tr><td>SEQ_Driver_O2Analyzer.TcPOU</td><td>333</td><td>QA007</td><td>매직 넘버 사용: 120</td></tr>
+<tr><td>SEQ_Driver_O2Analyzer.TcPOU</td><td>342</td><td>QA007</td><td>매직 넘버 사용: 121</td></tr>
+<tr><td>SEQ_Driver_O2Analyzer.TcPOU</td><td>357</td><td>QA007</td><td>매직 넘버 사용: 122</td></tr>
+<tr><td>SEQ_Driver_O2Analyzer.TcPOU</td><td>366</td><td>QA007</td><td>매직 넘버 사용: 123</td></tr>
+<tr><td>SEQ_Driver_O2Analyzer.TcPOU</td><td>373</td><td>QA007</td><td>매직 넘버 사용: 124</td></tr>
+<tr><td>SEQ_Driver_O2Analyzer.TcPOU</td><td>382</td><td>QA007</td><td>매직 넘버 사용: 125</td></tr>
+<tr><td>SEQ_Driver_O2Analyzer.TcPOU</td><td>397</td><td>QA007</td><td>매직 넘버 사용: 126</td></tr>
+<tr><td>SEQ_Driver_O2Analyzer.TcPOU</td><td>406</td><td>QA007</td><td>매직 넘버 사용: 127</td></tr>
+<tr><td>SEQ_Driver_O2Analyzer.TcPOU</td><td>413</td><td>QA007</td><td>매직 넘버 사용: 128</td></tr>
+<tr><td>SEQ_Driver_O2Analyzer.TcPOU</td><td>422</td><td>QA007</td><td>매직 넘버 사용: 129</td></tr>
+<tr><td>SEQ_Driver_O2Analyzer.TcPOU</td><td>437</td><td>QA007</td><td>매직 넘버 사용: 130</td></tr>
+<tr><td>SEQ_Driver_O2Analyzer.TcPOU</td><td>446</td><td>QA007</td><td>매직 넘버 사용: 131</td></tr>
+<tr><td>SEQ_Driver_O2Analyzer.TcPOU</td><td>453</td><td>QA007</td><td>매직 넘버 사용: 132</td></tr>
+<tr><td>SEQ_Driver_O2Analyzer.TcPOU</td><td>462</td><td>QA007</td><td>매직 넘버 사용: 133</td></tr>
+<tr><td>SEQ_Driver_O2Analyzer.TcPOU</td><td>477</td><td>QA007</td><td>매직 넘버 사용: 134</td></tr>
+<tr><td>SEQ_Driver_O2Analyzer.TcPOU</td><td>486</td><td>QA007</td><td>매직 넘버 사용: 135</td></tr>
+<tr><td>SEQ_Driver_O2Analyzer.TcPOU</td><td>493</td><td>QA007</td><td>매직 넘버 사용: 136</td></tr>
+<tr><td>SEQ_Driver_O2Analyzer.TcPOU</td><td>502</td><td>QA007</td><td>매직 넘버 사용: 137</td></tr>
+<tr><td>SEQ_Driver_O2Analyzer.TcPOU</td><td>517</td><td>QA007</td><td>매직 넘버 사용: 138</td></tr>
+<tr><td>SEQ_Driver_O2Analyzer.TcPOU</td><td>526</td><td>QA007</td><td>매직 넘버 사용: 139</td></tr>
+<tr><td>SEQ_Driver_O2Analyzer.TcPOU</td><td>533</td><td>QA007</td><td>매직 넘버 사용: 140</td></tr>
+<tr><td>SEQ_Driver_O2Analyzer.TcPOU</td><td>542</td><td>QA007</td><td>매직 넘버 사용: 141</td></tr>
+<tr><td>SEQ_Driver_O2Analyzer.TcPOU</td><td>557</td><td>QA007</td><td>매직 넘버 사용: 142</td></tr>
+<tr><td>SEQ_Driver_O2Analyzer.TcPOU</td><td>566</td><td>QA007</td><td>매직 넘버 사용: 143</td></tr>
+<tr><td>SEQ_Driver_O2Analyzer.TcPOU</td><td>573</td><td>QA007</td><td>매직 넘버 사용: 144</td></tr>
+<tr><td>SEQ_Driver_O2Analyzer.TcPOU</td><td>582</td><td>QA007</td><td>매직 넘버 사용: 145</td></tr>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2>복잡도 높은 파일 (Top 20)</h2>
+        <table>
+            <tr><th>파일</th><th>타입</th><th>라인수</th><th>복잡도</th><th>이슈수</th></tr>
+            <tr><td>SYS_Signal.TcPOU</td><td>PROGRAM</td><td>286</td><td>83</td><td>3</td></tr>
+<tr><td>SEQ_Driver_TCPIP.TcPOU</td><td>PROGRAM</td><td>181</td><td>61</td><td>62</td></tr>
+<tr><td>SEQ_Driver_O2Analyzer.TcPOU</td><td>PROGRAM</td><td>711</td><td>59</td><td>68</td></tr>
+<tr><td>SEQ_Temp_Control.TcPOU</td><td>FUNCTION</td><td>481</td><td>54</td><td>33</td></tr>
+<tr><td>SEQ_Driver_APC.TcPOU</td><td>PROGRAM</td><td>392</td><td>52</td><td>61</td></tr>
+<tr><td>SEQ_Physical_APC.TcPOU</td><td>FUNCTION</td><td>65</td><td>26</td><td>13</td></tr>
+<tr><td>FB_Alarm.TcPOU</td><td>FUNCTION_BLOCK</td><td>83</td><td>24</td><td>5</td></tr>
+<tr><td>SYS_LV_Log.TcPOU</td><td>PROGRAM</td><td>132</td><td>24</td><td>8</td></tr>
+<tr><td>FB_BasicPID_RSD.TcPOU</td><td>FUNCTION_BLOCK</td><td>118</td><td>23</td><td>11</td></tr>
+<tr><td>SEQ_Interface.TcPOU</td><td>PROGRAM</td><td>45</td><td>23</td><td>2</td></tr>
+<tr><td>SEQ_Driver_TV_VAT.TcPOU</td><td>PROGRAM</td><td>92</td><td>19</td><td>16</td></tr>
+<tr><td>SEQ_Function_Auto_PID.TcPOU</td><td>FUNCTION</td><td>35</td><td>19</td><td>2</td></tr>
+<tr><td>SEQ_Interlock_Valve.TcPOU</td><td>PROGRAM</td><td>251</td><td>18</td><td>45</td></tr>
+<tr><td>LOG_Process.TcPOU</td><td>PROGRAM</td><td>134</td><td>18</td><td>4</td></tr>
+<tr><td>SEQ_Driver_VAC_O2Analyzer.TcPOU</td><td>PROGRAM</td><td>172</td><td>17</td><td>17</td></tr>
+<tr><td>SEQ_Function_PartsPara.TcPOU</td><td>FUNCTION</td><td>68</td><td>17</td><td>8</td></tr>
+<tr><td>F_TrendData_RealToString.TcPOU</td><td>FUNCTION</td><td>43</td><td>17</td><td>2</td></tr>
+<tr><td>F_Cycle_StepCount.TcPOU</td><td>FUNCTION</td><td>61</td><td>16</td><td>5</td></tr>
+<tr><td>F_Cycle_StepCount_1.TcPOU</td><td>FUNCTION</td><td>61</td><td>16</td><td>5</td></tr>
+<tr><td>SEQ_Physical_RSD.TcPOU</td><td>FUNCTION</td><td>57</td><td>15</td><td>3</td></tr>
+        </table>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,45 @@
+# TwinCAT 프로젝트 Git 제외 파일
+
+## IDE
+.vs/
+.vscode/
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+## .NET 빌드
+bin/
+obj/
+*.dll
+*.exe
+*.pdb
+artifacts/
+
+## TwinCAT
+*.tpy
+*.tpzip
+*.compiled-library
+_Boot/
+_Libraries/
+_CompileInfo/
+*.tmc
+
+## Claude Code
+.claude/
+
+## 임시 파일
+*.tmp
+*.bak
+*.swp
+*.log
+
+## OS
+.DS_Store
+Thumbs.db
+
+## 민감 정보
+*.env
+*.secret
+credentials.json

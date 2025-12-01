@@ -1,0 +1,150 @@
+# TwinCAT 코드 품질 검증 도구 - Git 제외 파일 목록
+
+## .NET
+bin/
+obj/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.userprefs
+project.lock.json
+project.fragment.lock.json
+artifacts/
+*_i.c
+*_p.c
+*_h.h
+*.ilk
+*.meta
+*.obj
+*.pch
+*.pdb
+*.pgc
+*.pgd
+*.rsp
+*.sbr
+*.tlb
+*.tli
+*.tlh
+*.tmp
+*.tmp_proj
+*.log
+*.vspscc
+*.vssscc
+.builds
+*.pidb
+*.svclog
+*.scc
+
+## Visual Studio
+.vs/
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+## NuGet
+*.nupkg
+*.snupkg
+**/packages/*
+!**/packages/build/
+*.nuget.props
+*.nuget.targets
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+## Test Results
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+*.trx
+*.coverage
+*.coveragexml
+TestResults/
+
+## ReSharper
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+
+## JetBrains Rider
+.idea/
+*.sln.iml
+
+## CodeRush
+.cr/personal
+
+## Python (for ANTLR4 tooling if using Python)
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+
+## ANTLR4 Generated Files
+# ANTLR4 파서 파일은 빌드 시 재생성되므로 제외
+src/TwinCatQA.Infrastructure/Parsers/Grammars/*.cs
+src/TwinCatQA.Infrastructure/Parsers/Grammars/*.tokens
+src/TwinCatQA.Infrastructure/Parsers/Grammars/*.interp
+# JAR 파일은 유지 (다운로드 시간 절약)
+# src/TwinCatQA.Infrastructure/Parsers/Grammars/antlr-4.11.1-complete.jar
+
+## TwinCAT 관련
+*.tpy
+*.tpzip
+*.compiled-library
+_Boot/
+_Libraries/
+_CompileInfo/
+
+## 프로젝트 생성 파일
+.twincat-qa/
+# 단, 기본 설정 템플릿은 포함
+!.twincat-qa/settings.template.yml
+
+## OS
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+## Reports (사용자 생성 리포트는 제외, 템플릿은 포함)
+.twincat-qa/reports/*.html
+.twincat-qa/reports/*.pdf
+.twincat-qa/reports/*.json
+!.twincat-qa/reports/.gitkeep
+
+## 임시 파일
+*.tmp
+*.bak
+*.swp
+*~.nib
+*.swn
+*.swo
+
+## 민감 정보
+*.env
+*.secret
+credentials.json
+appsettings.Development.json
+
+## 빌드 스크립트 로그
+build-*.log

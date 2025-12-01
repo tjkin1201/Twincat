@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="E_ConveyorMode" Id="{12345678-1234-1234-1234-123456789008}">
+    <Declaration><![CDATA[
+{attribute 'qualified_only'}
+{attribute 'strict'}
+TYPE E_ConveyorMode :
+(
+    STOPPED := 0,        // 정지 상태
+    RUNNING := 1,        // 동작 중
+    ALARM := 2           // 알람 상태
+) := STOPPED;
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

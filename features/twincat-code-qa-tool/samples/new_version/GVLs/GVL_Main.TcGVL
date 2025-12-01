@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <GVL Name="GVL_Main" Id="{12345678-1234-1234-1234-123456789004}">
+    <Declaration><![CDATA[
+{attribute 'qualified_only'}
+VAR_GLOBAL
+    // 시스템 상태
+    bSystemEnable : BOOL := FALSE;        // 시스템 활성화
+    bEmergencyStop : BOOL := FALSE;       // 비상 정지
+    eSystemMode : E_SystemMode := E_SystemMode.MANUAL; // 시스템 모드 (열거형 사용)
+
+    // 센서 입력
+    bSensor1 : BOOL := FALSE;             // 센서 1 (초기화)
+    bSensor2 : BOOL := FALSE;             // 센서 2 (초기화)
+    bSensor3 : BOOL := FALSE;             // 센서 3 (초기화)
+
+    // 액추에이터 출력
+    bValve1 : BOOL := FALSE;              // 밸브 1 (초기화)
+    bValve2 : BOOL := FALSE;              // 밸브 2 (초기화)
+
+    // 온도 관련
+    fTemperature1 : REAL := 0.0;          // 온도 센서 1 [도C] (초기화)
+    fTemperature2 : REAL := 0.0;          // 온도 센서 2 [도C] (초기화)
+
+    // 카운터 및 통계
+    nProductionCount : DINT := 0;         // 생산 카운트 (초기화)
+    nErrorCount : INT := 0;               // 에러 카운트 (초기화)
+    fAverageSpeed : REAL := 0.0;          // 평균 속도 (초기화)
+
+    // 타이밍
+    tCycleTime : TIME := T#10MS;          // 사이클 타임
+    tOperationTime : TIME := T#0S;        // 총 동작 시간 (초기화)
+
+    // 개선: 미사용 전역 변수 제거됨
+
+    // 알람 관련
+    aAlarmBuffer : ARRAY[0..99] OF INT;   // 알람 버퍼
+    nAlarmIndex : INT := 0;               // 알람 인덱스 (초기화)
+    bAlarmActive : BOOL := FALSE;         // 알람 활성 상태 (초기화)
+
+    // 통신 데이터
+    nCommStatus : INT := 0;               // 통신 상태 (초기화)
+    bCommError : BOOL := FALSE;           // 통신 에러 (초기화)
+END_VAR
+
+VAR_GLOBAL CONSTANT
+    // 개선: 매직 넘버를 전역 상수로 정의
+    MAX_SPEED : INT := 2000;              // 최대 속도 [rpm]
+    MIN_SPEED : INT := 100;               // 최소 속도 [rpm]
+    TEMP_THRESHOLD_HIGH : REAL := 80.0;   // 고온 경보 임계값 [도C]
+    TEMP_THRESHOLD_LOW : REAL := 10.0;    // 저온 경보 임계값 [도C]
+    MAX_ALARM_BUFFER : INT := 99;         // 최대 알람 버퍼 크기
+END_VAR
+]]></Declaration>
+  </GVL>
+</TcPlcObject>

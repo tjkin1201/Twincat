@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="E_SystemMode" Id="{12345678-1234-1234-1234-123456789010}">
+    <Declaration><![CDATA[
+{attribute 'qualified_only'}
+{attribute 'strict'}
+TYPE E_SystemMode :
+(
+    MANUAL := 0,         // 수동 모드
+    AUTO := 1,           // 자동 모드
+    ALARM := 2           // 알람 모드
+) := MANUAL;
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

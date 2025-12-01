@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- ANTLR4 런타임 -->
+    <PackageReference Include="Antlr4.Runtime.Standard" Version="4.11.1" />
+    <PackageReference Include="envdte" Version="17.12.40391" />
+    <PackageReference Include="EPPlus" Version="7.0.0" />
+
+    <!-- Git 통합 -->
+    <PackageReference Include="LibGit2Sharp" Version="0.27.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
+
+    <!-- 비동기 LINQ -->
+    <PackageReference Include="System.Linq.Async" Version="6.0.1" />
+
+    <!-- 로깅 -->
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.0" />
+    <PackageReference Include="TcSysManagerLib" Version="3.3.0" />
+
+    <!-- Glob 패턴 매칭 -->
+    <PackageReference Include="Microsoft.Extensions.FileSystemGlobbing" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Domain 레이어 참조 -->
+    <ProjectReference Include="..\TwinCatQA.Domain\TwinCatQA.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,42 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- YAML 설정 관리 -->
+    <PackageReference Include="YamlDotNet" Version="13.7.1" />
+
+    <!-- Razor 템플릿 엔진 -->
+    <PackageReference Include="RazorLight" Version="2.3.0" />
+
+    <!-- PDF 생성 (선택 사항 - AGPL 라이선스 주의) -->
+    <PackageReference Include="itext7" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Domain 레이어 참조 -->
+    <ProjectReference Include="..\TwinCatQA.Domain\TwinCatQA.Domain.csproj" />
+
+    <!-- Infrastructure 레이어 참조 -->
+    <ProjectReference Include="..\TwinCatQA.Infrastructure\TwinCatQA.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- 템플릿 파일 복사 -->
+    <None Include="Templates\default-settings.yml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Templates\report-template.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Templates\report-styles.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

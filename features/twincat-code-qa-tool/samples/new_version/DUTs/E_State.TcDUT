@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="E_MotorState" Id="{12345678-1234-1234-1234-123456789007}">
+    <Declaration><![CDATA[
+{attribute 'qualified_only'}
+{attribute 'strict'}
+TYPE E_MotorState :
+(
+    IDLE := 0,           // 대기 상태
+    ACCELERATING := 1,   // 가속 중
+    RUNNING := 2,        // 정상 동작
+    DECELERATING := 3,   // 감속 중
+    STOPPING := 4,       // 정지 중
+    FAULT := 5           // 고장 상태
+) := IDLE;
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

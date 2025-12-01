@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CommandTable xmlns="http://schemas.microsoft.com/VisualStudio/2005-10-18/CommandTable" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <!--
+    TwinCAT QA Visual Studio Command Table
+    Visual Studio 메뉴 및 명령어 정의
+  -->
+
+  <Extern href="stdidcmd.h"/>
+  <Extern href="vsshlids.h"/>
+
+  <!--
+    명령어 정의
+  -->
+  <Commands package="guidTwinCatQAPackage">
+
+    <!-- 그룹 정의 -->
+    <Groups>
+      <!-- Tools 메뉴의 TwinCAT QA 그룹 -->
+      <Group guid="guidTwinCatQAPackageCmdSet" id="TwinCatQAMenuGroup" priority="0x0600">
+        <Parent guid="guidSHLMainMenu" id="IDM_VS_MENU_TOOLS"/>
+      </Group>
+
+      <!-- TwinCAT QA 서브메뉴 그룹 -->
+      <Group guid="guidTwinCatQAPackageCmdSet" id="TwinCatQASubMenuGroup" priority="0x0000">
+        <Parent guid="guidTwinCatQAPackageCmdSet" id="TwinCatQASubMenu"/>
+      </Group>
+
+      <!-- Solution Explorer 컨텍스트 메뉴 그룹 (프로젝트) -->
+      <Group guid="guidTwinCatQAPackageCmdSet" id="TwinCatQAContextMenuGroup" priority="0x0600">
+        <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_PROJNODE"/>
+      </Group>
+
+      <!-- Solution Explorer 컨텍스트 메뉴 그룹 (파일) -->
+      <Group guid="guidTwinCatQAPackageCmdSet" id="TwinCatQAContextMenuFileGroup" priority="0x0600">
+        <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_ITEMNODE"/>
+      </Group>
+    </Groups>
+
+    <!-- 메뉴 정의 -->
+    <Menus>
+      <!-- TwinCAT QA 서브메뉴 -->
+      <Menu guid="guidTwinCatQAPackageCmdSet" id="TwinCatQASubMenu" priority="0x0100" type="Menu">
+        <Parent guid="guidTwinCatQAPackageCmdSet" id="TwinCatQAMenuGroup"/>
+        <Strings>
+          <ButtonText>TwinCAT QA</ButtonText>
+          <CommandName>TwinCAT QA</CommandName>
+        </Strings>
+      </Menu>
+    </Menus>
+
+    <!-- 버튼 정의 -->
+    <Buttons>
+
+      <!-- 현재 파일 분석 명령어 -->
+      <Button guid="guidTwinCatQAPackageCmdSet" id="AnalyzeCurrentFileCommandId" priority="0x0100" type="Button">
+        <Parent guid="guidTwinCatQAPackageCmdSet" id="TwinCatQASubMenuGroup"/>
+        <Icon guid="guidImages" id="bmpAnalyze"/>
+        <CommandFlag>DefaultInvisible</CommandFlag>
+        <CommandFlag>DynamicVisibility</CommandFlag>
+        <Strings>
+          <ButtonText>현재 파일 분석</ButtonText>
+          <ToolTipText>현재 활성 파일의 코드 품질을 분석합니다</ToolTipText>
+          <CommandName>AnalyzeCurrentFile</CommandName>
+        </Strings>
+      </Button>
+
+      <!-- 전체 프로젝트 분석 명령어 -->
+      <Button guid="guidTwinCatQAPackageCmdSet" id="AnalyzeProjectCommandId" priority="0x0101" type="Button">
+        <Parent guid="guidTwinCatQAPackageCmdSet" id="TwinCatQASubMenuGroup"/>
+        <Icon guid="guidImages" id="bmpAnalyzeProject"/>
+        <Strings>
+          <ButtonText>전체 프로젝트 분석</ButtonText>
+          <ToolTipText>프로젝트의 모든 TwinCAT 파일을 분석합니다</ToolTipText>
+          <CommandName>AnalyzeProject</CommandName>
+        </Strings>
+      </Button>
+
+      <!-- 도구 창 표시 명령어 -->
+      <Button guid="guidTwinCatQAPackageCmdSet" id="ShowToolWindowCommandId" priority="0x0102" type="Button">
+        <Parent guid="guidTwinCatQAPackageCmdSet" id="TwinCatQASubMenuGroup"/>
+        <Icon guid="guidImages" id="bmpToolWindow"/>
+        <Strings>
+          <ButtonText>QA 결과 창 표시</ButtonText>
+          <ToolTipText>TwinCAT QA 분석 결과 창을 표시합니다</ToolTipText>
+          <CommandName>ShowToolWindow</CommandName>
+        </Strings>
+      </Button>
+
+      <!-- 설정 열기 명령어 -->
+      <Button guid="guidTwinCatQAPackageCmdSet" id="SettingsCommandId" priority="0x0103" type="Button">
+        <Parent guid="guidTwinCatQAPackageCmdSet" id="TwinCatQASubMenuGroup"/>
+        <Icon guid="guidImages" id="bmpSettings"/>
+        <Strings>
+          <ButtonText>설정...</ButtonText>
+          <ToolTipText>TwinCAT QA 설정을 엽니다</ToolTipText>
+          <CommandName>OpenSettings</CommandName>
+        </Strings>
+      </Button>
+
+      <!-- 컨텍스트 메뉴: 프로젝트 분석 -->
+      <Button guid="guidTwinCatQAPackageCmdSet" id="ContextAnalyzeProjectCommandId" priority="0x0100" type="Button">
+        <Parent guid="guidTwinCatQAPackageCmdSet" id="TwinCatQAContextMenuGroup"/>
+        <Icon guid="guidImages" id="bmpAnalyzeProject"/>
+        <Strings>
+          <ButtonText>TwinCAT QA 분석</ButtonText>
+          <ToolTipText>선택한 프로젝트를 분석합니다</ToolTipText>
+          <CommandName>ContextAnalyzeProject</CommandName>
+        </Strings>
+      </Button>
+
+      <!-- 컨텍스트 메뉴: 파일 분석 -->
+      <Button guid="guidTwinCatQAPackageCmdSet" id="ContextAnalyzeFileCommandId" priority="0x0100" type="Button">
+        <Parent guid="guidTwinCatQAPackageCmdSet" id="TwinCatQAContextMenuFileGroup"/>
+        <Icon guid="guidImages" id="bmpAnalyze"/>
+        <Strings>
+          <ButtonText>TwinCAT QA 분석</ButtonText>
+          <ToolTipText>선택한 파일을 분석합니다</ToolTipText>
+          <CommandName>ContextAnalyzeFile</CommandName>
+        </Strings>
+      </Button>
+
+    </Buttons>
+
+    <!-- 비트맵 아이콘 정의 -->
+    <Bitmaps>
+      <Bitmap guid="guidImages" href="Resources\Commands.png" usedList="bmpAnalyze, bmpAnalyzeProject, bmpToolWindow, bmpSettings"/>
+    </Bitmaps>
+  </Commands>
+
+  <!-- 키보드 단축키 정의 -->
+  <KeyBindings>
+    <!-- Ctrl+Shift+Q: 현재 파일 분석 -->
+    <KeyBinding guid="guidTwinCatQAPackageCmdSet" id="AnalyzeCurrentFileCommandId"
+                editor="guidVSStd97"
+                key1="Q" mod1="Control Shift"/>
+
+    <!-- Ctrl+Shift+Alt+Q: 전체 프로젝트 분석 -->
+    <KeyBinding guid="guidTwinCatQAPackageCmdSet" id="AnalyzeProjectCommandId"
+                editor="guidVSStd97"
+                key1="Q" mod1="Control Shift Alt"/>
+  </KeyBindings>
+
+  <!-- GUID 심볼 정의 -->
+  <Symbols>
+    <!-- 패키지 GUID -->
+    <GuidSymbol name="guidTwinCatQAPackage" value="{3f2a8e5c-9d7b-4a1f-8e3c-5b6a9d2e4f7c}" />
+
+    <!-- 명령어 세트 GUID -->
+    <GuidSymbol name="guidTwinCatQAPackageCmdSet" value="{a1b2c3d4-e5f6-4a5b-9c8d-7e6f5a4b3c2d}">
+      <!-- 그룹 ID -->
+      <IDSymbol name="TwinCatQAMenuGroup" value="0x1000" />
+      <IDSymbol name="TwinCatQASubMenuGroup" value="0x1001" />
+      <IDSymbol name="TwinCatQAContextMenuGroup" value="0x1002" />
+      <IDSymbol name="TwinCatQAContextMenuFileGroup" value="0x1003" />
+
+      <!-- 메뉴 ID -->
+      <IDSymbol name="TwinCatQASubMenu" value="0x1100"/>
+
+      <!-- 명령어 ID -->
+      <IDSymbol name="AnalyzeCurrentFileCommandId" value="0x0100" />
+      <IDSymbol name="AnalyzeProjectCommandId" value="0x0101" />
+      <IDSymbol name="ShowToolWindowCommandId" value="0x0102" />
+      <IDSymbol name="SettingsCommandId" value="0x0103" />
+      <IDSymbol name="ContextAnalyzeProjectCommandId" value="0x0104" />
+      <IDSymbol name="ContextAnalyzeFileCommandId" value="0x0105" />
+    </GuidSymbol>
+
+    <!-- 아이콘 GUID -->
+    <GuidSymbol name="guidImages" value="{d9f0a8e5-4b2c-4d3a-9e7f-6c5b8a9d2e4f}" >
+      <IDSymbol name="bmpAnalyze" value="1" />
+      <IDSymbol name="bmpAnalyzeProject" value="2" />
+      <IDSymbol name="bmpToolWindow" value="3" />
+      <IDSymbol name="bmpSettings" value="4" />
+    </GuidSymbol>
+  </Symbols>
+</CommandTable>

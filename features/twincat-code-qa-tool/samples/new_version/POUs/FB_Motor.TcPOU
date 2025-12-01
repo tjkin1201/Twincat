@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="FB_Motor" Id="{12345678-1234-1234-1234-123456789002}" SpecialFunc="None">
+    <Declaration><![CDATA[
+FUNCTION_BLOCK FB_Motor
+VAR_INPUT
+    Enable : BOOL;           // 모터 활성화
+    TargetSpeed : REAL;      // 목표 속도 [rpm]
+    Reset : BOOL;            // 고장 리셋
+END_VAR
+
+VAR_OUTPUT
+    IsRunning : BOOL;        // 모터 동작 중
+    CurrentSpeed : REAL;     // 현재 속도 [rpm]
+    Fault : BOOL;            // 고장 상태
+    FaultCode : INT;         // 고장 코드
+END_VAR
+
+VAR
+    eState : E_MotorState := E_MotorState.IDLE; // 상태 머신 (열거형 사용)
+    tonStartDelay : TON;     // 시작 지연 타이머
+    tonFaultDelay : TON;     // 고장 감지 지연
+
+    fSpeedError : REAL;      // 속도 오차
+    nFaultCounter : INT := 0; // 고장 카운터 (초기화)
+
+    aSpeedHistory : ARRAY[0..9] OF REAL; // 속도 이력
+    nHistoryIndex : INT := 0; // 이력 인덱스 (초기화)
+
+    // 개선: 미사용 변수 제거됨
+END_VAR
+
+VAR CONSTANT
+    // 개선: 매직 넘버를 상수로 정의
+    ACCELERATION : REAL := 100.0;     // 가속도 [rpm/s]
+    CYCLE_TIME : REAL := 0.01;        // 사이클 타임 [s]
+    MAX_SPEED_LIMIT : REAL := 2000.0; // 최대 속도 제한 [rpm]
+    SPEED_ERROR_LIMIT : REAL := 200.0; // 속도 오차 허용 한계
+    SPEED_TOLERANCE : REAL := 1.0;    // 속도 허용 오차
+    MIN_RUNNING_SPEED : REAL := 10.0; // 최소 동작 속도
+    MAX_HISTORY_INDEX : INT := 9;     // 최대 이력 인덱스
+    HIGH_SPEED_WARNING : REAL := 1800.0; // 고속도 경고 임계값
+    START_DELAY_TIME : TIME := T#500MS; // 시작 지연 시간
+    FAULT_DELAY_TIME : TIME := T#2S;    // 고장 감지 지연 시간
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+// 모터 제어 Function Block
+
+// 고장 리셋 처리
+IF Reset AND Fault THEN
+    Fault := FALSE;
+    FaultCode := 0;
+    nFaultCounter := 0;
+    eState := E_MotorState.IDLE;
+END_IF
+
+// 상태 머신 (열거형 사용으로 개선)
+CASE eState OF
+    E_MotorState.IDLE: // 대기 상태
+        IsRunning := FALSE;
+        CurrentSpeed := 0.0;
+
+        IF Enable THEN
+            tonStartDelay(IN := TRUE, PT := START_DELAY_TIME);
+            IF tonStartDelay.Q THEN
+                eState := E_MotorState.ACCELERATING;
+                tonStartDelay(IN := FALSE);
+            END_IF
+        END_IF
+
+    E_MotorState.ACCELERATING: // 가속 상태
+        IsRunning := TRUE;
+
+        // 개선: 상수 사용
+        IF CurrentSpeed < TargetSpeed THEN
+            CurrentSpeed := CurrentSpeed + ACCELERATION * CYCLE_TIME;
+        ELSE
+            eState := E_MotorState.RUNNING;
+        END_IF
+
+        // 개선: 배열 경계 검사
+        nHistoryIndex := nHistoryIndex + 1;
+        IF nHistoryIndex > MAX_HISTORY_INDEX THEN
+            nHistoryIndex := 0;
+        END_IF
+        aSpeedHistory[nHistoryIndex] := CurrentSpeed;
+
+    E_MotorState.RUNNING: // 정상 동작
+        IsRunning := TRUE;
+
+        // 속도 제어
+        fSpeedError := TargetSpeed - CurrentSpeed;
+
+        // 개선: REAL 비교 시 허용 오차 사용
+        IF ABS(fSpeedError) < SPEED_TOLERANCE THEN
+            CurrentSpeed := TargetSpeed;
+        ELSIF fSpeedError > 0.0 THEN
+            CurrentSpeed := CurrentSpeed + ACCELERATION * CYCLE_TIME;
+        ELSE
+            CurrentSpeed := CurrentSpeed - ACCELERATION * CYCLE_TIME;
+        END_IF
+
+        // 개선: 상수 사용
+        IF CurrentSpeed > MAX_SPEED_LIMIT THEN
+            Fault := TRUE;
+            FaultCode := 101;
+            eState := E_MotorState.STOPPING;
+        END_IF
+
+        // 속도 오차 과다 감지
+        tonFaultDelay(IN := ABS(fSpeedError) > SPEED_ERROR_LIMIT, PT := FAULT_DELAY_TIME);
+        IF tonFaultDelay.Q THEN
+            Fault := TRUE;
+            FaultCode := 102;
+            eState := E_MotorState.STOPPING;
+        END_IF
+
+        IF NOT Enable THEN
+            eState := E_MotorState.STOPPING;
+        END_IF
+
+    E_MotorState.STOPPING: // 정지/고장 상태
+        // 개선: 상수 사용
+        IF CurrentSpeed > MIN_RUNNING_SPEED THEN
+            CurrentSpeed := CurrentSpeed - ACCELERATION * CYCLE_TIME * 1.5;
+        ELSE
+            CurrentSpeed := 0.0;
+            IsRunning := FALSE;
+
+            IF NOT Fault THEN
+                eState := E_MotorState.IDLE;
+            END_IF
+        END_IF
+
+        // 개선: 단순화된 고장 카운터 처리
+        IF Fault AND (FaultCode = 101) THEN
+            nFaultCounter := MIN(nFaultCounter + 1, 10);
+        END_IF
+
+END_CASE
+
+// 개선: 명확한 조건과 상수 사용
+IF CurrentSpeed > HIGH_SPEED_WARNING THEN
+    nFaultCounter := MIN(nFaultCounter + 1, 100);
+END_IF
+]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

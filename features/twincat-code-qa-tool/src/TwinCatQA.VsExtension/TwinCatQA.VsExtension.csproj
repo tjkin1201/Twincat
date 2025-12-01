@@ -1,0 +1,87 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+
+    <!-- VSIX 프로젝트 설정 -->
+    <GeneratePkgDefFile>true</GeneratePkgDefFile>
+    <IncludeAssemblyInVSIXContainer>true</IncludeAssemblyInVSIXContainer>
+    <IncludeDebugSymbolsInVSIXContainer>true</IncludeDebugSymbolsInVSIXContainer>
+    <IncludeDebugSymbolsInLocalVSIXDeployment>true</IncludeDebugSymbolsInLocalVSIXDeployment>
+    <CopyBuildOutputToOutputDirectory>true</CopyBuildOutputToOutputDirectory>
+    <CopyOutputSymbolsToOutputDirectory>false</CopyOutputSymbolsToOutputDirectory>
+
+    <!-- Visual Studio Extension 정보 -->
+    <StartAction>Program</StartAction>
+    <StartProgram Condition="'$(DevEnvDir)' != ''">$(DevEnvDir)devenv.exe</StartProgram>
+    <StartArguments>/rootsuffix Exp</StartArguments>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Visual Studio SDK 패키지 -->
+    <PackageReference Include="Microsoft.VisualStudio.SDK" Version="17.8.37221" ExcludeAssets="runtime" />
+    <PackageReference Include="Microsoft.VSSDK.BuildTools" Version="17.8.2345">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+
+    <!-- Visual Studio 상호 운용 어셈블리 -->
+    <PackageReference Include="Microsoft.VisualStudio.Interop" Version="17.8.37221" />
+    <PackageReference Include="Microsoft.VisualStudio.Shell.Framework" Version="17.8.37221" />
+    <PackageReference Include="Microsoft.VisualStudio.Shell.15.0" Version="17.8.37221" />
+
+    <!-- 비동기 프로그래밍 -->
+    <PackageReference Include="Microsoft.VisualStudio.Threading" Version="17.8.14" />
+    <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="17.8.14">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+
+    <!-- 유효성 검사 -->
+    <PackageReference Include="Microsoft.VisualStudio.Validation" Version="17.8.8" />
+
+    <!-- UI 구성 요소 -->
+    <PackageReference Include="Microsoft.VisualStudio.ImageCatalog" Version="17.8.37221" />
+
+    <!-- 의존성 주입 -->
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.0" />
+
+    <!-- Community Toolkit -->
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- 프로젝트 참조 -->
+    <ProjectReference Include="..\TwinCatQA.Domain\TwinCatQA.Domain.csproj" />
+    <ProjectReference Include="..\TwinCatQA.Application\TwinCatQA.Application.csproj" />
+    <ProjectReference Include="..\TwinCatQA.Infrastructure\TwinCatQA.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- VSIX 매니페스트 -->
+    <None Include="source.extension.vsixmanifest">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- 리소스 -->
+    <VSCTCompile Include="TwinCatQAPackage.vsct">
+      <ResourceName>Menus.ctmenu</ResourceName>
+    </VSCTCompile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- 아이콘 및 이미지 -->
+    <Content Include="Resources\**\*.*">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+  </ItemGroup>
+
+</Project>

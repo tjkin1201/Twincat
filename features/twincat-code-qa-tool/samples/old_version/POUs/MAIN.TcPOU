@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="MAIN" Id="{12345678-1234-1234-1234-123456789001}" SpecialFunc="None">
+    <Declaration><![CDATA[
+PROGRAM MAIN
+VAR
+    fbMotor1 : FB_Motor;              // 모터 제어 Function Block
+    fbMotor2 : FB_Motor;              // 두 번째 모터
+    fbConveyor : FB_Conveyor;         // 컨베이어 제어
+
+    nCounter : INT;                   // 카운터
+    nSpeed : INT;                     // 속도 값
+    fTemperature : REAL;              // 온도 센서 값
+    bEmergencyStop : BOOL;            // 비상 정지 신호
+    bSystemReady : BOOL;              // 시스템 준비 상태
+
+    nIndex : INT;                     // 배열 인덱스
+    aDataBuffer : ARRAY[0..99] OF INT; // 데이터 버퍼
+
+    // 초기화되지 않은 변수 - QA 이슈 1
+    nUninitializedValue : DINT;
+
+    // 미사용 변수 - QA 이슈 2
+    nUnusedVariable : INT;
+    bUnusedFlag : BOOL;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+// 메인 제어 루프
+nCounter := nCounter + 1;
+
+// QA 이슈 3: 초기화되지 않은 변수 사용
+nSpeed := DINT_TO_INT(nUninitializedValue / 100);  // 위험한 타입 변환
+
+// QA 이슈 4: REAL 직접 비교
+IF fTemperature = 25.5 THEN
+    bSystemReady := TRUE;
+END_IF
+
+// QA 이슈 5: 배열 경계 검사 없음
+nIndex := nCounter MOD 150;  // 0..99를 초과할 수 있음
+aDataBuffer[nIndex] := nSpeed;
+
+// 비상 정지 처리
+IF bEmergencyStop THEN
+    fbMotor1.Enable := FALSE;
+    fbMotor2.Enable := FALSE;
+    fbConveyor.Enable := FALSE;
+ELSE
+    // 정상 동작
+    fbMotor1.TargetSpeed := nSpeed;
+    fbMotor1.Enable := TRUE;
+    fbMotor1();
+
+    // QA 이슈 6: 매직 넘버 사용
+    IF fbMotor1.CurrentSpeed > 1500 THEN
+        fbMotor2.TargetSpeed := 750;
+        fbMotor2.Enable := TRUE;
+    END_IF
+
+    fbMotor2();
+
+    // 컨베이어 제어
+    fbConveyor.Speed := fbMotor1.CurrentSpeed * 0.5;
+    fbConveyor.Enable := fbMotor1.IsRunning AND NOT fbMotor1.Fault;
+    fbConveyor();
+END_IF
+
+// QA 이슈 7: 중첩된 조건문
+IF nCounter > 100 THEN
+    IF fbMotor1.IsRunning THEN
+        IF fbMotor2.IsRunning THEN
+            IF fbConveyor.Enable THEN
+                IF fTemperature < 30.0 THEN
+                    IF NOT bEmergencyStop THEN
+                        // 너무 깊은 중첩
+                        bSystemReady := TRUE;
+                    END_IF
+                END_IF
+            END_IF
+        END_IF
+    END_IF
+END_IF
+
+// QA 이슈 8: 하드코딩된 타임아웃 값
+IF nCounter > 5000 THEN
+    nCounter := 0;
+END_IF
+]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

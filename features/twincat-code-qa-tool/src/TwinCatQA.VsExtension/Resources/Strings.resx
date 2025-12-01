@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+
+  <!-- UI 텍스트 - 버튼 -->
+  <data name="Button_Analyze" xml:space="preserve">
+    <value>분석</value>
+    <comment>분석 버튼 텍스트</comment>
+  </data>
+  <data name="Button_Cancel" xml:space="preserve">
+    <value>취소</value>
+    <comment>취소 버튼 텍스트</comment>
+  </data>
+  <data name="Button_OK" xml:space="preserve">
+    <value>확인</value>
+    <comment>확인 버튼 텍스트</comment>
+  </data>
+  <data name="Button_Apply" xml:space="preserve">
+    <value>적용</value>
+    <comment>적용 버튼 텍스트</comment>
+  </data>
+  <data name="Button_Close" xml:space="preserve">
+    <value>닫기</value>
+    <comment>닫기 버튼 텍스트</comment>
+  </data>
+  <data name="Button_Save" xml:space="preserve">
+    <value>저장</value>
+    <comment>저장 버튼 텍스트</comment>
+  </data>
+  <data name="Button_Load" xml:space="preserve">
+    <value>불러오기</value>
+    <comment>불러오기 버튼 텍스트</comment>
+  </data>
+  <data name="Button_Export" xml:space="preserve">
+    <value>내보내기</value>
+    <comment>내보내기 버튼 텍스트</comment>
+  </data>
+  <data name="Button_Import" xml:space="preserve">
+    <value>가져오기</value>
+    <comment>가져오기 버튼 텍스트</comment>
+  </data>
+  <data name="Button_Refresh" xml:space="preserve">
+    <value>새로고침</value>
+    <comment>새로고침 버튼 텍스트</comment>
+  </data>
+
+  <!-- UI 텍스트 - 레이블 -->
+  <data name="Label_FileName" xml:space="preserve">
+    <value>파일 이름</value>
+    <comment>파일 이름 레이블</comment>
+  </data>
+  <data name="Label_Severity" xml:space="preserve">
+    <value>심각도</value>
+    <comment>심각도 레이블</comment>
+  </data>
+  <data name="Label_Line" xml:space="preserve">
+    <value>라인</value>
+    <comment>라인 번호 레이블</comment>
+  </data>
+  <data name="Label_Message" xml:space="preserve">
+    <value>메시지</value>
+    <comment>메시지 레이블</comment>
+  </data>
+  <data name="Label_RuleName" xml:space="preserve">
+    <value>규칙 이름</value>
+    <comment>규칙 이름 레이블</comment>
+  </data>
+  <data name="Label_Category" xml:space="preserve">
+    <value>카테고리</value>
+    <comment>카테고리 레이블</comment>
+  </data>
+  <data name="Label_Status" xml:space="preserve">
+    <value>상태</value>
+    <comment>상태 레이블</comment>
+  </data>
+  <data name="Label_Progress" xml:space="preserve">
+    <value>진행률</value>
+    <comment>진행률 레이블</comment>
+  </data>
+
+  <!-- UI 텍스트 - 메뉴 -->
+  <data name="Menu_File" xml:space="preserve">
+    <value>파일</value>
+    <comment>파일 메뉴</comment>
+  </data>
+  <data name="Menu_Edit" xml:space="preserve">
+    <value>편집</value>
+    <comment>편집 메뉴</comment>
+  </data>
+  <data name="Menu_View" xml:space="preserve">
+    <value>보기</value>
+    <comment>보기 메뉴</comment>
+  </data>
+  <data name="Menu_Tools" xml:space="preserve">
+    <value>도구</value>
+    <comment>도구 메뉴</comment>
+  </data>
+  <data name="Menu_Help" xml:space="preserve">
+    <value>도움말</value>
+    <comment>도움말 메뉴</comment>
+  </data>
+  <data name="Menu_Options" xml:space="preserve">
+    <value>옵션</value>
+    <comment>옵션 메뉴</comment>
+  </data>
+
+  <!-- UI 텍스트 - 툴팁 -->
+  <data name="Tooltip_Analyze" xml:space="preserve">
+    <value>코드 분석을 시작합니다</value>
+    <comment>분석 버튼 툴팁</comment>
+  </data>
+  <data name="Tooltip_Refresh" xml:space="preserve">
+    <value>목록을 새로고침합니다</value>
+    <comment>새로고침 버튼 툴팁</comment>
+  </data>
+  <data name="Tooltip_Export" xml:space="preserve">
+    <value>결과를 파일로 내보냅니다</value>
+    <comment>내보내기 버튼 툴팁</comment>
+  </data>
+  <data name="Tooltip_Filter" xml:space="preserve">
+    <value>결과를 필터링합니다</value>
+    <comment>필터 툴팁</comment>
+  </data>
+
+  <!-- 메시지 - 오류 -->
+  <data name="Error_FileNotFound" xml:space="preserve">
+    <value>파일을 찾을 수 없습니다: {0}</value>
+    <comment>파일 없음 오류</comment>
+  </data>
+  <data name="Error_InvalidFile" xml:space="preserve">
+    <value>유효하지 않은 파일 형식입니다: {0}</value>
+    <comment>잘못된 파일 형식 오류</comment>
+  </data>
+  <data name="Error_AnalysisFailed" xml:space="preserve">
+    <value>분석 중 오류가 발생했습니다: {0}</value>
+    <comment>분석 실패 오류</comment>
+  </data>
+  <data name="Error_SaveFailed" xml:space="preserve">
+    <value>저장하는 중 오류가 발생했습니다: {0}</value>
+    <comment>저장 실패 오류</comment>
+  </data>
+  <data name="Error_LoadFailed" xml:space="preserve">
+    <value>불러오는 중 오류가 발생했습니다: {0}</value>
+    <comment>로드 실패 오류</comment>
+  </data>
+  <data name="Error_UnexpectedError" xml:space="preserve">
+    <value>예기치 않은 오류가 발생했습니다: {0}</value>
+    <comment>예상치 못한 오류</comment>
+  </data>
+  <data name="Error_AccessDenied" xml:space="preserve">
+    <value>파일에 접근할 수 없습니다: {0}</value>
+    <comment>접근 거부 오류</comment>
+  </data>
+
+  <!-- 메시지 - 경고 -->
+  <data name="Warning_NoIssuesFound" xml:space="preserve">
+    <value>발견된 문제가 없습니다</value>
+    <comment>문제 없음 경고</comment>
+  </data>
+  <data name="Warning_UnsavedChanges" xml:space="preserve">
+    <value>저장하지 않은 변경사항이 있습니다. 계속하시겠습니까?</value>
+    <comment>저장 안된 변경사항 경고</comment>
+  </data>
+  <data name="Warning_LargeFile" xml:space="preserve">
+    <value>파일이 매우 큽니다. 분석에 시간이 걸릴 수 있습니다</value>
+    <comment>큰 파일 경고</comment>
+  </data>
+  <data name="Warning_RuleDisabled" xml:space="preserve">
+    <value>일부 규칙이 비활성화되어 있습니다</value>
+    <comment>규칙 비활성화 경고</comment>
+  </data>
+
+  <!-- 메시지 - 정보 -->
+  <data name="Info_AnalysisComplete" xml:space="preserve">
+    <value>분석이 완료되었습니다</value>
+    <comment>분석 완료 정보</comment>
+  </data>
+  <data name="Info_IssuesFound" xml:space="preserve">
+    <value>{0}개의 문제가 발견되었습니다</value>
+    <comment>문제 발견 정보</comment>
+  </data>
+  <data name="Info_FileSaved" xml:space="preserve">
+    <value>파일이 저장되었습니다: {0}</value>
+    <comment>파일 저장 정보</comment>
+  </data>
+  <data name="Info_ExportComplete" xml:space="preserve">
+    <value>내보내기가 완료되었습니다: {0}</value>
+    <comment>내보내기 완료 정보</comment>
+  </data>
+  <data name="Info_AnalysisProgress" xml:space="preserve">
+    <value>분석 중... ({0}/{1})</value>
+    <comment>분석 진행 상황 정보</comment>
+  </data>
+
+  <!-- 메시지 - 확인 -->
+  <data name="Confirm_DeleteRule" xml:space="preserve">
+    <value>선택한 규칙을 삭제하시겠습니까?</value>
+    <comment>규칙 삭제 확인</comment>
+  </data>
+  <data name="Confirm_ResetSettings" xml:space="preserve">
+    <value>설정을 초기화하시겠습니까?</value>
+    <comment>설정 초기화 확인</comment>
+  </data>
+  <data name="Confirm_ClearResults" xml:space="preserve">
+    <value>모든 결과를 지우시겠습니까?</value>
+    <comment>결과 지우기 확인</comment>
+  </data>
+
+  <!-- 규칙 이름 -->
+  <data name="Rule_NamingConvention" xml:space="preserve">
+    <value>명명 규칙</value>
+    <comment>명명 규칙 이름</comment>
+  </data>
+  <data name="Rule_UnusedVariable" xml:space="preserve">
+    <value>사용되지 않는 변수</value>
+    <comment>미사용 변수 규칙 이름</comment>
+  </data>
+  <data name="Rule_MagicNumber" xml:space="preserve">
+    <value>매직 넘버</value>
+    <comment>매직 넘버 규칙 이름</comment>
+  </data>
+  <data name="Rule_FunctionComplexity" xml:space="preserve">
+    <value>함수 복잡도</value>
+    <comment>함수 복잡도 규칙 이름</comment>
+  </data>
+  <data name="Rule_MissingComment" xml:space="preserve">
+    <value>누락된 주석</value>
+    <comment>주석 누락 규칙 이름</comment>
+  </data>
+  <data name="Rule_LongFunction" xml:space="preserve">
+    <value>긴 함수</value>
+    <comment>긴 함수 규칙 이름</comment>
+  </data>
+  <data name="Rule_DeepNesting" xml:space="preserve">
+    <value>과도한 중첩</value>
+    <comment>과도한 중첩 규칙 이름</comment>
+  </data>
+
+  <!-- 규칙 설명 -->
+  <data name="RuleDesc_NamingConvention" xml:space="preserve">
+    <value>변수, 함수 등의 명명 규칙을 검사합니다</value>
+    <comment>명명 규칙 설명</comment>
+  </data>
+  <data name="RuleDesc_UnusedVariable" xml:space="preserve">
+    <value>선언되었으나 사용되지 않는 변수를 찾습니다</value>
+    <comment>미사용 변수 규칙 설명</comment>
+  </data>
+  <data name="RuleDesc_MagicNumber" xml:space="preserve">
+    <value>하드코딩된 숫자 리터럴을 검사합니다</value>
+    <comment>매직 넘버 규칙 설명</comment>
+  </data>
+  <data name="RuleDesc_FunctionComplexity" xml:space="preserve">
+    <value>함수의 순환 복잡도를 측정합니다</value>
+    <comment>함수 복잡도 규칙 설명</comment>
+  </data>
+  <data name="RuleDesc_MissingComment" xml:space="preserve">
+    <value>주석이 필요한 코드를 검사합니다</value>
+    <comment>주석 누락 규칙 설명</comment>
+  </data>
+  <data name="RuleDesc_LongFunction" xml:space="preserve">
+    <value>너무 긴 함수를 찾습니다</value>
+    <comment>긴 함수 규칙 설명</comment>
+  </data>
+  <data name="RuleDesc_DeepNesting" xml:space="preserve">
+    <value>중첩 깊이가 과도한 코드를 검사합니다</value>
+    <comment>과도한 중첩 규칙 설명</comment>
+  </data>
+
+  <!-- 상태 메시지 -->
+  <data name="Status_Ready" xml:space="preserve">
+    <value>준비됨</value>
+    <comment>준비 상태</comment>
+  </data>
+  <data name="Status_Analyzing" xml:space="preserve">
+    <value>분석 중...</value>
+    <comment>분석 중 상태</comment>
+  </data>
+  <data name="Status_Complete" xml:space="preserve">
+    <value>완료</value>
+    <comment>완료 상태</comment>
+  </data>
+  <data name="Status_Failed" xml:space="preserve">
+    <value>실패</value>
+    <comment>실패 상태</comment>
+  </data>
+  <data name="Status_Cancelled" xml:space="preserve">
+    <value>취소됨</value>
+    <comment>취소 상태</comment>
+  </data>
+
+  <!-- 심각도 -->
+  <data name="Severity_Error" xml:space="preserve">
+    <value>오류</value>
+    <comment>오류 심각도</comment>
+  </data>
+  <data name="Severity_Warning" xml:space="preserve">
+    <value>경고</value>
+    <comment>경고 심각도</comment>
+  </data>
+  <data name="Severity_Info" xml:space="preserve">
+    <value>정보</value>
+    <comment>정보 심각도</comment>
+  </data>
+  <data name="Severity_Hint" xml:space="preserve">
+    <value>힌트</value>
+    <comment>힌트 심각도</comment>
+  </data>
+
+  <!-- 카테고리 -->
+  <data name="Category_Style" xml:space="preserve">
+    <value>스타일</value>
+    <comment>스타일 카테고리</comment>
+  </data>
+  <data name="Category_Performance" xml:space="preserve">
+    <value>성능</value>
+    <comment>성능 카테고리</comment>
+  </data>
+  <data name="Category_Security" xml:space="preserve">
+    <value>보안</value>
+    <comment>보안 카테고리</comment>
+  </data>
+  <data name="Category_Maintainability" xml:space="preserve">
+    <value>유지보수성</value>
+    <comment>유지보수성 카테고리</comment>
+  </data>
+</root>

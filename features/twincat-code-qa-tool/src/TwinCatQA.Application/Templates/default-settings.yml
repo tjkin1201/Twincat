@@ -1,0 +1,178 @@
+# TwinCAT 코드 품질 검증 도구 설정 파일
+# 작성일: 2025-11-20
+#
+# 이 파일은 TwinCAT 프로젝트의 코드 품질 검증 규칙과 동작을 정의합니다.
+# 프로젝트 루트의 .twincat-qa/settings.yml 경로에 이 파일을 복사하여 사용하세요.
+
+# ============================================================
+# 전역 설정
+# ============================================================
+global:
+  # 검증 모드: Full (전체), Incremental (변경된 파일만), Quick (빠른 검증)
+  defaultMode: Full
+
+  # 병렬 처리 활성화 (대규모 프로젝트에서 성능 향상)
+  enableParallelProcessing: true
+
+  # 병렬 처리 최대 스레드 수 (CPU 코어 수에 맞게 조정)
+  maxDegreeOfParallelism: 4
+
+  # 검증 타임아웃 (초 단위)
+  timeoutSeconds: 300
+
+  # 로깅 수준: Debug, Info, Warning, Error
+  logLevel: Info
+
+# ============================================================
+# 검증 규칙 설정
+# ============================================================
+rules:
+  # 모든 규칙 활성화 여부
+  enableAllRules: true
+
+  # 커스텀 규칙 디렉토리 (선택 사항)
+  customRulesPath: ""
+
+  # 규칙별 상세 설정
+  configurations:
+    # --------------------------------------------------------
+    # FR-2: 한글 주석 규칙
+    # --------------------------------------------------------
+    FR-2-KOREAN-COMMENT:
+      enabled: true
+      severity: High  # Info, Low, Medium, High, Critical
+      parameters:
+        # 한글 주석 비율 (0.95 = 95% 이상 한글)
+        requiredKoreanRatio: 0.95
+        # 기술 용어는 영어 허용
+        allowEnglishForTechnical: true
+      excludePatterns:
+        - "**/ThirdParty/**"
+        - "**/Generated/**"
+
+    # --------------------------------------------------------
+    # FR-7: 순환 복잡도 규칙
+    # --------------------------------------------------------
+    FR-7-CYCLOMATIC-COMPLEXITY:
+      enabled: true
+      severity: Medium
+      parameters:
+        # 복잡도 임계값
+        mediumThreshold: 10   # 보통 수준
+        highThreshold: 15     # 높음 수준
+        criticalThreshold: 20 # 치명적 수준
+      excludePatterns:
+        - "**/Legacy/**"
+
+    # --------------------------------------------------------
+    # FR-8: 명명 규칙
+    # --------------------------------------------------------
+    FR-8-NAMING-CONVENTION:
+      enabled: true
+      severity: Medium
+      parameters:
+        # Function Block은 FB_ 접두사 필수
+        fbPrefixRequired: true
+        # 변수는 접두사 필수 (bFlag, nCount 등)
+        varPrefixRequired: true
+        # PascalCase 엄격 적용
+        strictPascalCase: true
+      excludePatterns: []
+
+    # --------------------------------------------------------
+    # FR-3: 코드 중복 검사
+    # --------------------------------------------------------
+    FR-3-CODE-DUPLICATION:
+      enabled: true
+      severity: Low
+      parameters:
+        # 중복으로 판단할 최소 토큰 수
+        minimumTokens: 50
+        # 중복 허용 파일 수
+        maxDuplicateFiles: 2
+      excludePatterns:
+        - "**/Tests/**"
+
+    # --------------------------------------------------------
+    # FR-4: 매직 넘버 검사
+    # --------------------------------------------------------
+    FR-4-MAGIC-NUMBER:
+      enabled: true
+      severity: Low
+      parameters:
+        # 예외 허용 숫자 (0, 1, -1 등)
+        allowedNumbers: [0, 1, -1, 100]
+        # 상수 선언 강제
+        requireConstant: true
+      excludePatterns: []
+
+    # --------------------------------------------------------
+    # FR-5: 함수 길이 제한
+    # --------------------------------------------------------
+    FR-5-FUNCTION-LENGTH:
+      enabled: true
+      severity: Medium
+      parameters:
+        # 최대 라인 수
+        maxLines: 100
+        # 경고 라인 수
+        warningLines: 50
+      excludePatterns: []
+
+    # --------------------------------------------------------
+    # FR-6: 에러 처리 검사
+    # --------------------------------------------------------
+    FR-6-ERROR-HANDLING:
+      enabled: true
+      severity: High
+      parameters:
+        # 모든 함수에 에러 처리 필수
+        requireErrorHandling: true
+        # 빈 catch 블록 금지
+        disallowEmptyCatch: true
+      excludePatterns: []
+
+# ============================================================
+# 보고서 설정
+# ============================================================
+reports:
+  # HTML 보고서 생성 (웹 브라우저에서 확인)
+  generateHtml: true
+
+  # PDF 보고서 생성 (문서화용)
+  generatePdf: false
+
+  # JSON 보고서 생성 (CI/CD 파이프라인용)
+  generateJson: true
+
+  # 보고서 출력 경로
+  outputPath: .twincat-qa/reports
+
+  # 보고서에 소스 코드 포함 여부
+  includeSourceCode: true
+
+  # 보고서 파일명 템플릿
+  # 사용 가능한 변수: {timestamp}, {date}, {time}, {project}
+  fileNameTemplate: report-{timestamp}
+
+  # 이전 보고서 보관 개수 (0: 무제한)
+  keepReportsCount: 10
+
+# ============================================================
+# Git 통합 설정
+# ============================================================
+git:
+  # Pre-commit 훅 활성화 (커밋 전 자동 검증)
+  enablePreCommitHook: false
+
+  # Critical 위반 시 커밋 차단
+  blockOnCriticalViolations: true
+
+  # High 위반 시 커밋 차단
+  blockOnHighViolations: false
+
+  # 증분 검증 모드 (변경된 파일만 검증)
+  incrementalMode: true
+
+  # Git 훅 설치 경로 (자동 감지 시 빈 문자열)
+  hooksPath: ""

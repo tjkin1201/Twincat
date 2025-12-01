@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="FB_Motor" Id="{12345678-1234-1234-1234-123456789002}" SpecialFunc="None">
+    <Declaration><![CDATA[
+FUNCTION_BLOCK FB_Motor
+VAR_INPUT
+    Enable : BOOL;           // 모터 활성화
+    TargetSpeed : REAL;      // 목표 속도 [rpm]
+    Reset : BOOL;            // 고장 리셋
+END_VAR
+
+VAR_OUTPUT
+    IsRunning : BOOL;        // 모터 동작 중
+    CurrentSpeed : REAL;     // 현재 속도 [rpm]
+    Fault : BOOL;            // 고장 상태
+    FaultCode : INT;         // 고장 코드
+END_VAR
+
+VAR
+    nState : INT := 0;       // 상태 머신
+    fAcceleration : REAL := 100.0; // 가속도 [rpm/s]
+    tonStartDelay : TON;     // 시작 지연 타이머
+    tonFaultDelay : TON;     // 고장 감지 지연
+
+    // QA 이슈: 미사용 변수들
+    nUnusedCounter : INT;
+    fUnusedTemp : REAL;
+    bUnusedFlag : BOOL;
+
+    fSpeedError : REAL;      // 속도 오차
+    nFaultCounter : INT;     // 고장 카운터
+
+    aSpeedHistory : ARRAY[0..9] OF REAL; // 속도 이력
+    nHistoryIndex : INT;     // 이력 인덱스
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+// 모터 제어 Function Block
+
+// 고장 리셋 처리
+IF Reset AND Fault THEN
+    Fault := FALSE;
+    FaultCode := 0;
+    nFaultCounter := 0;
+    nState := 0;
+END_IF
+
+// 상태 머신
+CASE nState OF
+    0: // 대기 상태
+        IsRunning := FALSE;
+        CurrentSpeed := 0.0;
+
+        IF Enable THEN
+            tonStartDelay(IN := TRUE, PT := T#500MS);
+            IF tonStartDelay.Q THEN
+                nState := 1;
+                tonStartDelay(IN := FALSE);
+            END_IF
+        END_IF
+
+    1: // 가속 상태
+        IsRunning := TRUE;
+
+        // QA 이슈: 매직 넘버 사용
+        IF CurrentSpeed < TargetSpeed THEN
+            CurrentSpeed := CurrentSpeed + fAcceleration * 0.01; // 사이클 타임 하드코딩
+        ELSE
+            nState := 2;
+        END_IF
+
+        // QA 이슈: 배열 경계 검사 없음
+        nHistoryIndex := nHistoryIndex + 1;
+        aSpeedHistory[nHistoryIndex] := CurrentSpeed; // 인덱스가 0..9를 초과할 수 있음
+
+    2: // 정상 동작
+        IsRunning := TRUE;
+
+        // 속도 제어
+        fSpeedError := TargetSpeed - CurrentSpeed;
+
+        // QA 이슈: REAL 직접 비교
+        IF fSpeedError = 0.0 THEN
+            // 목표 속도 도달
+            CurrentSpeed := TargetSpeed;
+        ELSIF fSpeedError > 0.0 THEN
+            CurrentSpeed := CurrentSpeed + fAcceleration * 0.01;
+        ELSE
+            CurrentSpeed := CurrentSpeed - fAcceleration * 0.01;
+        END_IF
+
+        // 과속도 감지 (QA 이슈: 하드코딩)
+        IF CurrentSpeed > 2000.0 THEN
+            Fault := TRUE;
+            FaultCode := 101;
+            nState := 3;
+        END_IF
+
+        // 속도 오차 과다 감지
+        tonFaultDelay(IN := ABS(fSpeedError) > 200.0, PT := T#2S);
+        IF tonFaultDelay.Q THEN
+            Fault := TRUE;
+            FaultCode := 102;
+            nState := 3;
+        END_IF
+
+        IF NOT Enable THEN
+            nState := 3; // 정지로 전환
+        END_IF
+
+    3: // 정지/고장 상태
+        // QA 이슈: 매직 넘버
+        IF CurrentSpeed > 10.0 THEN
+            CurrentSpeed := CurrentSpeed - fAcceleration * 0.015;
+        ELSE
+            CurrentSpeed := 0.0;
+            IsRunning := FALSE;
+
+            IF NOT Fault THEN
+                nState := 0;
+            END_IF
+        END_IF
+
+        // QA 이슈: 복잡한 중첩 조건
+        IF Fault THEN
+            IF nFaultCounter < 10 THEN
+                IF FaultCode = 101 THEN
+                    nFaultCounter := nFaultCounter + 1;
+                END_IF
+            END_IF
+        END_IF
+
+END_CASE
+
+// QA 이슈: 타입 변환 없이 비교
+IF CurrentSpeed > 1800 THEN
+    // 경고 상태
+    nFaultCounter := nFaultCounter + 1;
+END_IF
+]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

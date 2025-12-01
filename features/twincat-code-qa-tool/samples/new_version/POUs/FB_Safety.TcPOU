@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="FB_Safety" Id="{12345678-1234-1234-1234-123456789006}" SpecialFunc="None">
+    <Declaration><![CDATA[
+FUNCTION_BLOCK FB_Safety
+VAR_INPUT
+    EmergencyStop : BOOL;        // 비상 정지 입력
+    SafetyDoorOpen : BOOL;       // 안전 도어 개방
+    TemperatureAlarm : BOOL;     // 온도 알람
+    PressureAlarm : BOOL;        // 압력 알람
+    Reset : BOOL;                // 리셋 버튼
+END_VAR
+
+VAR_OUTPUT
+    SafetyFault : BOOL;          // 안전 고장
+    SafetyOK : BOOL;             // 안전 정상
+    FaultCode : INT;             // 고장 코드
+    WarningCode : INT;           // 경고 코드
+END_VAR
+
+VAR
+    eSafetyState : E_SafetyState := E_SafetyState.INITIALIZING; // 안전 상태
+    tonResetDelay : TON;         // 리셋 지연 타이머
+    tonFaultDelay : TON;         // 고장 확인 지연
+
+    bEmergencyStopLatched : BOOL := FALSE; // 비상 정지 래칭
+    bDoorOpenLatched : BOOL := FALSE;      // 도어 개방 래칭
+
+    nFaultHistory : ARRAY[0..9] OF INT;    // 고장 이력
+    nFaultIndex : INT := 0;                // 고장 인덱스
+END_VAR
+
+VAR CONSTANT
+    FAULT_CODE_EMERGENCY : INT := 301;     // 비상 정지 고장 코드
+    FAULT_CODE_DOOR : INT := 302;          // 도어 개방 고장 코드
+    FAULT_CODE_TEMPERATURE : INT := 303;   // 온도 고장 코드
+    FAULT_CODE_PRESSURE : INT := 304;      // 압력 고장 코드
+    WARNING_CODE_TEMP : INT := 401;        // 온도 경고 코드
+    RESET_DELAY_TIME : TIME := T#1S;       // 리셋 지연 시간
+    FAULT_CONFIRM_TIME : TIME := T#500MS;  // 고장 확인 시간
+    MAX_FAULT_HISTORY : INT := 9;          // 최대 고장 이력 개수
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+// 안전 제어 Function Block (새로 추가됨)
+
+// 안전 상태 머신
+CASE eSafetyState OF
+    E_SafetyState.INITIALIZING: // 초기화 상태
+        SafetyFault := FALSE;
+        SafetyOK := FALSE;
+        FaultCode := 0;
+        WarningCode := 0;
+
+        // 모든 안전 입력이 정상이면 정상 상태로 전환
+        IF NOT EmergencyStop AND NOT SafetyDoorOpen AND NOT TemperatureAlarm AND NOT PressureAlarm THEN
+            eSafetyState := E_SafetyState.NORMAL;
+        ELSE
+            eSafetyState := E_SafetyState.FAULT;
+        END_IF
+
+    E_SafetyState.NORMAL: // 정상 상태
+        SafetyFault := FALSE;
+        SafetyOK := TRUE;
+        FaultCode := 0;
+
+        // 온도 경고 체크
+        IF TemperatureAlarm THEN
+            WarningCode := WARNING_CODE_TEMP;
+        ELSE
+            WarningCode := 0;
+        END_IF
+
+        // 안전 입력 모니터링
+        IF EmergencyStop THEN
+            bEmergencyStopLatched := TRUE;
+            FaultCode := FAULT_CODE_EMERGENCY;
+            eSafetyState := E_SafetyState.FAULT;
+        ELSIF SafetyDoorOpen THEN
+            bDoorOpenLatched := TRUE;
+            FaultCode := FAULT_CODE_DOOR;
+            eSafetyState := E_SafetyState.FAULT;
+        ELSIF TemperatureAlarm THEN
+            tonFaultDelay(IN := TRUE, PT := FAULT_CONFIRM_TIME);
+            IF tonFaultDelay.Q THEN
+                FaultCode := FAULT_CODE_TEMPERATURE;
+                eSafetyState := E_SafetyState.FAULT;
+            END_IF
+        ELSIF PressureAlarm THEN
+            FaultCode := FAULT_CODE_PRESSURE;
+            eSafetyState := E_SafetyState.FAULT;
+        ELSE
+            tonFaultDelay(IN := FALSE);
+        END_IF
+
+    E_SafetyState.FAULT: // 고장 상태
+        SafetyFault := TRUE;
+        SafetyOK := FALSE;
+
+        // 고장 이력 저장
+        IF FaultCode <> 0 THEN
+            nFaultHistory[nFaultIndex] := FaultCode;
+            nFaultIndex := nFaultIndex + 1;
+            IF nFaultIndex > MAX_FAULT_HISTORY THEN
+                nFaultIndex := 0;
+            END_IF
+        END_IF
+
+        // 리셋 조건 확인
+        IF Reset AND NOT EmergencyStop AND NOT SafetyDoorOpen THEN
+            tonResetDelay(IN := TRUE, PT := RESET_DELAY_TIME);
+            IF tonResetDelay.Q THEN
+                eSafetyState := E_SafetyState.RESETTING;
+                tonResetDelay(IN := FALSE);
+            END_IF
+        ELSE
+            tonResetDelay(IN := FALSE);
+        END_IF
+
+    E_SafetyState.RESETTING: // 리셋 상태
+        SafetyFault := FALSE;
+        SafetyOK := FALSE;
+
+        // 래칭된 고장 클리어
+        bEmergencyStopLatched := FALSE;
+        bDoorOpenLatched := FALSE;
+        FaultCode := 0;
+        WarningCode := 0;
+
+        // 정상 상태로 전환
+        eSafetyState := E_SafetyState.NORMAL;
+
+END_CASE
+]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,90 @@
+{
+  "version": "2.0",
+  "projectName": "TwinCAT Example Project",
+
+  "globalExclusions": {
+    "files": [
+      "**/Generated/**",
+      "**/Test/**",
+      "**/*.g.st",
+      "**/bin/**",
+      "**/obj/**"
+    ],
+    "directories": [
+      "**/bin",
+      "**/obj",
+      "**/.vs"
+    ],
+    "rules": [
+      "SA0029"
+    ]
+  },
+
+  "ruleOverrides": {
+    "SA0049": {
+      "enabled": true,
+      "severity": "Warning",
+      "parameters": {
+        "maxMagicNumberValue": 100,
+        "allowedValues": [0, 1, -1, 100, 1000],
+        "allowEnumValues": true
+      },
+      "filePatterns": ["POUs/**/*.st"],
+      "excludePatterns": ["POUs/Test/**"]
+    },
+    "SA0033": {
+      "enabled": true,
+      "severity": "Error",
+      "parameters": {
+        "maxComplexity": 15,
+        "countSwitchCases": true
+      }
+    },
+    "SA0052": {
+      "enabled": false,
+      "severity": "Info"
+    }
+  },
+
+  "fileOverrides": {
+    "POUs/Safety/**": {
+      "minSeverity": "Critical",
+      "strictMode": true,
+      "enabledRules": ["SA0001", "SA0002", "SA0033"],
+      "parameters": {
+        "requireDocumentation": true,
+        "maxLineLength": 80
+      }
+    },
+    "POUs/Legacy/**": {
+      "minSeverity": "Error",
+      "strictMode": false,
+      "disabledRules": ["SA0049", "SA0052"]
+    },
+    "DUTs/**": {
+      "minSeverity": "Warning",
+      "enabledRules": ["SA0001", "SA0002"]
+    }
+  },
+
+  "inlineSuppressions": {
+    "enabled": true,
+    "commentPatterns": [
+      "// qa-ignore: {ruleId}",
+      "(* qa-ignore: {ruleId} *)"
+    ],
+    "blockStartPatterns": [
+      "// qa-ignore-start: {ruleId}",
+      "(* qa-ignore-start: {ruleId} *)"
+    ],
+    "blockEndPatterns": [
+      "// qa-ignore-end",
+      "(* qa-ignore-end *)"
+    ],
+    "fileSuppressionPatterns": [
+      "// qa-ignore-file: {ruleId}",
+      "(* qa-ignore-file: {ruleId} *)"
+    ],
+    "warnOnUnusedSuppressions": true
+  }
+}

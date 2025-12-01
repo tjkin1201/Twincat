@@ -1,0 +1,112 @@
+<UserControl x:Class="TwinCatQA.UI.Controls.DiffViewer"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignHeight="400" d:DesignWidth="800">
+
+    <UserControl.Resources>
+        <!-- 추가된 라인 스타일 -->
+        <Style x:Key="AddedLineStyle" TargetType="TextBlock">
+            <Setter Property="Background" Value="#CCFFCC"/>
+            <Setter Property="Foreground" Value="#006600"/>
+        </Style>
+
+        <!-- 삭제된 라인 스타일 -->
+        <Style x:Key="RemovedLineStyle" TargetType="TextBlock">
+            <Setter Property="Background" Value="#FFCCCC"/>
+            <Setter Property="Foreground" Value="#660000"/>
+        </Style>
+
+        <!-- 변경된 라인 스타일 -->
+        <Style x:Key="ModifiedLineStyle" TargetType="TextBlock">
+            <Setter Property="Background" Value="#FFFFCC"/>
+            <Setter Property="Foreground" Value="#666600"/>
+        </Style>
+
+        <!-- 기본 라인 스타일 -->
+        <Style x:Key="UnchangedLineStyle" TargetType="TextBlock">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#333333"/>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- 범례 -->
+        <Border Grid.Row="0" Background="#F0F0F0" Padding="10,5" BorderBrush="#DEE2E6" BorderThickness="0,0,0,1">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="범례:" FontWeight="SemiBold" Margin="0,0,15,0" VerticalAlignment="Center"/>
+                <Border Background="#CCFFCC" Padding="8,3" Margin="0,0,10,0" CornerRadius="3">
+                    <TextBlock Text="+ 추가" Foreground="#006600" FontSize="11"/>
+                </Border>
+                <Border Background="#FFCCCC" Padding="8,3" Margin="0,0,10,0" CornerRadius="3">
+                    <TextBlock Text="- 삭제" Foreground="#660000" FontSize="11"/>
+                </Border>
+                <Border Background="#FFFFCC" Padding="8,3" Margin="0,0,10,0" CornerRadius="3">
+                    <TextBlock Text="~ 수정" Foreground="#666600" FontSize="11"/>
+                </Border>
+                <Border Background="White" Padding="8,3" CornerRadius="3" BorderBrush="#DEE2E6" BorderThickness="1">
+                    <TextBlock Text="  동일" Foreground="#333333" FontSize="11"/>
+                </Border>
+            </StackPanel>
+        </Border>
+
+        <!-- Diff 내용 -->
+        <ScrollViewer Grid.Row="1"
+                      VerticalScrollBarVisibility="Auto"
+                      HorizontalScrollBarVisibility="Auto">
+            <ItemsControl x:Name="DiffContent"
+                          FontFamily="Consolas"
+                          FontSize="12"
+                          Background="White">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="50"/>
+                                <ColumnDefinition Width="30"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- 라인 번호 -->
+                            <Border Grid.Column="0"
+                                    Background="#F8F8F8"
+                                    BorderBrush="#E0E0E0"
+                                    BorderThickness="0,0,1,0">
+                                <TextBlock Text="{Binding LineNumber}"
+                                           Foreground="#999999"
+                                           Padding="5,2"
+                                           TextAlignment="Right"/>
+                            </Border>
+
+                            <!-- 변경 표시 -->
+                            <Border Grid.Column="1"
+                                    Background="{Binding PrefixBackground}">
+                                <TextBlock Text="{Binding Prefix}"
+                                           Foreground="{Binding PrefixForeground}"
+                                           Padding="5,2"
+                                           TextAlignment="Center"
+                                           FontWeight="Bold"/>
+                            </Border>
+
+                            <!-- 코드 내용 -->
+                            <Border Grid.Column="2"
+                                    Background="{Binding Background}">
+                                <TextBlock Text="{Binding Text}"
+                                           Foreground="{Binding Foreground}"
+                                           Padding="10,2"
+                                           TextWrapping="NoWrap"/>
+                            </Border>
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

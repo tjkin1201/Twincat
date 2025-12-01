@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="FB_Conveyor" Id="{12345678-1234-1234-1234-123456789003}" SpecialFunc="None">
+    <Declaration><![CDATA[
+FUNCTION_BLOCK FB_Conveyor
+VAR_INPUT
+    Enable : BOOL;           // 컨베이어 활성화
+    Speed : REAL;            // 속도 [mm/s]
+    Direction : BOOL;        // 방향 (TRUE=전진, FALSE=후진)
+    EmergencyStop : BOOL;    // 비상 정지
+END_VAR
+
+VAR_OUTPUT
+    IsRunning : BOOL;        // 동작 중
+    Position : LREAL;        // 현재 위치 [mm]
+    ProductCount : INT;      // 제품 카운트
+    Alarm : BOOL;            // 알람 상태
+    AlarmCode : INT;         // 알람 코드
+END_VAR
+
+VAR
+    nOperationMode : INT;    // 동작 모드 (0:정지, 1:동작, 2:알람)
+    fCurrentSpeed : REAL;    // 현재 속도
+    tonProductSensor : TON;  // 제품 감지 타이머
+    bProductDetected : BOOL; // 제품 감지 신호 (시뮬레이션)
+
+    nCycleCounter : INT;     // 사이클 카운터
+    fPositionIncrement : REAL; // 위치 증분
+
+    // QA 이슈: 미사용 변수
+    nUnusedMode : INT;
+    fUnusedValue : REAL;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+// 컨베이어 제어 Function Block
+
+nCycleCounter := nCycleCounter + 1;
+
+// 비상 정지 처리
+IF EmergencyStop THEN
+    IsRunning := FALSE;
+    fCurrentSpeed := 0.0;
+    nOperationMode := 2;
+    Alarm := TRUE;
+    AlarmCode := 201;
+    RETURN;
+END_IF
+
+// QA 이슈: 깊은 중첩 조건문
+IF Enable THEN
+    IF Speed > 0.0 THEN
+        IF NOT Alarm THEN
+            IF nOperationMode <> 2 THEN
+                IF fCurrentSpeed < Speed THEN
+                    IF Direction THEN
+                        // 6단계 중첩 - 가독성 저하
+                        IsRunning := TRUE;
+                        fCurrentSpeed := fCurrentSpeed + 5.0; // QA 이슈: 매직 넘버
+                    END_IF
+                END_IF
+            END_IF
+        END_IF
+    END_IF
+ELSE
+    IsRunning := FALSE;
+    fCurrentSpeed := 0.0;
+END_IF
+
+// 속도 제어 (QA 이슈: 하드코딩된 값)
+IF IsRunning THEN
+    IF fCurrentSpeed < Speed THEN
+        fCurrentSpeed := fCurrentSpeed + 2.5;
+    ELSIF fCurrentSpeed > Speed THEN
+        fCurrentSpeed := fCurrentSpeed - 2.5;
+    END_IF
+
+    // QA 이슈: REAL 직접 비교
+    IF fCurrentSpeed = Speed THEN
+        fCurrentSpeed := Speed;
+    END_IF
+ELSE
+    IF fCurrentSpeed > 0.0 THEN
+        fCurrentSpeed := fCurrentSpeed - 3.0;
+    ELSE
+        fCurrentSpeed := 0.0;
+    END_IF
+END_IF
+
+// 위치 계산 (QA 이슈: 매직 넘버 0.01은 사이클 타임)
+IF Direction THEN
+    fPositionIncrement := fCurrentSpeed * 0.01;
+ELSE
+    fPositionIncrement := -fCurrentSpeed * 0.01;
+END_IF
+
+Position := Position + fPositionIncrement;
+
+// 제품 감지 시뮬레이션 (QA 이슈: 하드코딩된 조건)
+IF nCycleCounter MOD 500 = 0 THEN
+    bProductDetected := TRUE;
+ELSE
+    bProductDetected := FALSE;
+END_IF
+
+// 제품 카운팅
+tonProductSensor(IN := bProductDetected, PT := T#100MS);
+IF tonProductSensor.Q THEN
+    ProductCount := ProductCount + 1;
+    tonProductSensor(IN := FALSE);
+
+    // QA 이슈: 매직 넘버와 하드코딩
+    IF ProductCount > 9999 THEN
+        ProductCount := 0;
+    END_IF
+END_IF
+
+// 과속도 알람 체크 (QA 이슈: 하드코딩)
+IF fCurrentSpeed > 1000.0 THEN
+    Alarm := TRUE;
+    AlarmCode := 202;
+    nOperationMode := 2;
+END_IF
+
+// QA 이슈: 복잡한 중첩 및 매직 넘버
+IF IsRunning THEN
+    IF ProductCount > 100 THEN
+        IF fCurrentSpeed > 500.0 THEN
+            IF nCycleCounter > 10000 THEN
+                // 4단계 중첩
+                nOperationMode := 1;
+            END_IF
+        END_IF
+    END_IF
+END_IF
+
+// 알람 리셋 (QA 이슈: 불명확한 조건)
+IF NOT Enable AND NOT IsRunning THEN
+    IF Alarm THEN
+        IF AlarmCode = 202 THEN
+            Alarm := FALSE;
+            AlarmCode := 0;
+            nOperationMode := 0;
+        END_IF
+    END_IF
+END_IF
+
+// QA 이슈: 타입 혼용
+IF Position > 999999 THEN // LREAL과 INT 상수 비교
+    Position := 0.0;
+END_IF
+]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>
